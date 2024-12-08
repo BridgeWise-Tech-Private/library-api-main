@@ -29,4 +29,4 @@ jobs:
           echo "NEON_DB_CONNECTION_STRING=${{ secrets.NEON_DB_CONNECTION_STRING }}" >> $GITHUB_ENV
           echo "NODE_ENV=test" >> $GITHUB_ENV
       - name: Run tests
-        run: npm test --forceExit
+        run: npm test --detectOpenHandles --forceExit
