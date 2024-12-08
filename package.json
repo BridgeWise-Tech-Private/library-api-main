@@ -30,7 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "bad-words": "^3.0.4",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.4.7",
     "fastify": "^3.27.4",
     "fastify-error": "^1.0.0",
     "fastify-openapi-glue": "^2.6.6",
