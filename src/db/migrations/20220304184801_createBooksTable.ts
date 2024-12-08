@@ -1,11 +1,11 @@
 import * as Knex from 'knex';
 
-export async function up(knex: Knex): Promise<void> {
+export async function up(knex: Knex.Knex): Promise<void> {
   // Install the uuid-ossp extension
   await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
 
   // Create the books table
-  return knex.schema.createTable('books', (table) => {
+  return knex.schema.createTable('books', (table: Knex.TableBuilder) => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.string('title', 255).notNullable();
     table.string('author', 255).notNullable();
@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
   });
 }
 
-export async function down(knex: Knex): Promise<void> {
+export async function down(knex: Knex.Knex): Promise<void> {
   // Drop the books table
   return knex.schema.dropTable('books');
 }
