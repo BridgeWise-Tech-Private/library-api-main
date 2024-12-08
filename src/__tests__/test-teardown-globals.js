@@ -1,4 +1,4 @@
-const knex = require('../../src/db/knex');
+const knex = require('../db/knex').default;
 
 module.exports = async () => {
   console.log('Closing database connection...');
