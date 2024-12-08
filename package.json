@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/bad-words": "^3.0.1",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^29.5.14",
     "@types/knex": "^0.16.1",
     "@types/node": "17.0.21",
     "js-yaml": "^4.1.0",
