@@ -5,7 +5,7 @@ export async function up(knex: Knex.Knex): Promise<void> {
   await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
 
   // Create the books table
-  return knex.schema.createTable('books', (table: Knex.TableBuilder) => {
+  return knex.schema.createTable('books', (table: Knex.Knex.TableBuilder) => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.string('title', 255).notNullable();
     table.string('author', 255).notNullable();
