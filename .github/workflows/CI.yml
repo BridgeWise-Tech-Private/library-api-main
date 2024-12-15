@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Set environment variables
+        run: |
+          echo "NEON_DB_CONNECTION_STRING=${{ secrets.NEON_DB_CONNECTION_STRING }}" >> $GITHUB_ENV
+          echo "NODE_ENV=test" >> $GITHUB_ENV
+        
+      - name: Run tests
+        run: npm test -- --detectOpenHandles --forceExit

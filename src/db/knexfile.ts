@@ -1,4 +1,10 @@
-import config from '../config'
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+
+import config from '../config';
 
 const knexConfig: { [key: string]: any } = {
   test: {
@@ -9,7 +15,7 @@ const knexConfig: { [key: string]: any } = {
     seeds: {
       directory: './seeds'
     },
-    connection: 'postgres://localhost:5432/library_api_test'
+    connection: process.env.NEON_DB_CONNECTION_STRING || 'postgres://localhost:5432/library_api_test'
   },
   development: {
     client: 'postgresql',
@@ -19,7 +25,7 @@ const knexConfig: { [key: string]: any } = {
     seeds: {
       directory: './seeds'
     },
-    connection: 'postgres://localhost:5432/library_api_dev'
+    connection: process.env.NEON_DB_CONNECTION_STRING || 'postgres://localhost:5432/library_api_dev'
   },
   production: {
     client: 'postgresql',
@@ -35,6 +41,6 @@ const knexConfig: { [key: string]: any } = {
   seeds: {
     directory: './seeds'
   }
-}
+};
 
-export default knexConfig
+export default knexConfig;

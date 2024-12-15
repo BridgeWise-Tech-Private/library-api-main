@@ -1,23 +1,37 @@
-import knex from '../knex'
+import knex from '../knex';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 /** Used when resetting database */
-
 const resetDb = async () => {
-  const { current_database: currentDb } = (
-    await knex.raw('SELECT current_database()')
-  ).rows[0]
-  console.log(
-    `Dropping data in database '${currentDb}' and clearing migration history...`
-  )
+  try {
+    const { current_database: currentDb } = (
+      await knex.raw('SELECT current_database()')
+    ).rows[0];
+    console.log(
+      `Dropping data in database '${currentDb}' and clearing migration history...`
+    );
 
-  // delete migrations history
-  await knex.schema.dropTableIfExists('knex_migrations')
-  await knex.schema.dropTableIfExists('knex_migrations_lock')
+    // Install the uuid-ossp extension
+    await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
 
-  // drop books table
-  await knex.schema.dropTableIfExists('books')
+    // delete migrations history
+    await knex.schema.dropTableIfExists('knex_migrations');
+    await knex.schema.dropTableIfExists('knex_migrations_lock');
 
-  process.exit(0)
-}
+    // drop books table
+    await knex.schema.dropTableIfExists('books');
 
-resetDb()
+    console.log('Database reset successful');
+  } catch (error) {
+    console.error('Error resetting database:', error);
+    process.exit(1);
+  } finally {
+    await knex.destroy();
+  }
+};
+
+resetDb();
