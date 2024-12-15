@@ -84,3 +84,8 @@ Import the `Test_Runner_Story.postman_collection.json` file into Postman and run
 Open the debugger tab, select `launch dev server` and the task, and press the "play" button.
 
 This will launch the dev server in vscode and allow you to add breakpoints for debugging.
+
+## TODO
+
+Add the following to CI.yml when `JEST` is fixed
+ -- --detectOpenHandles --forceExit

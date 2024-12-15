@@ -30,4 +30,4 @@ jobs:
           echo "NODE_ENV=test" >> $GITHUB_ENV
         
       - name: Run tests
-        run: npm test -- --detectOpenHandles --forceExit
+        run: npm test
