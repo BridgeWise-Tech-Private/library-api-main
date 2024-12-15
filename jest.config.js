@@ -1,10 +1,8 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  globalTeardown: './src/__tests__/test-teardown-globals.js',
-  verbose: true,
-  // automock: true,
-  testMatch: ['**/*.test.ts'],
-  setupFiles: ['dotenv/config'] // required for Jest to find env vars
-};
+export const preset = 'ts-jest';
+export const testEnvironment = 'node';
+export const globalTeardown = './src/__tests__/test-teardown-globals.js';
+export const verbose = true;
+//export const automock: true;
+export const testMatch = ['**/*.test.ts'];
+export const setupFiles = ['dotenv/config'] // required for Jest to find env vars
