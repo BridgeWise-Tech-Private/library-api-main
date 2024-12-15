@@ -1,9 +1,11 @@
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import openapiGlue from 'fastify-openapi-glue';
 import RouteHandler from './RouteHandler';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const glueOptions = {
-  specification: `${__dirname}/schema.yaml`,
+  specification: `${path.dirname(fileURLToPath(import.meta.url))}/schema.yaml`,
   service: new RouteHandler(),
   ajvOptions: {
     allErrors: true

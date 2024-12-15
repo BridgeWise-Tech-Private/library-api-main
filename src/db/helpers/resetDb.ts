@@ -1,9 +1,10 @@
 import knex from '../knex';
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Load environment variables from .env file
-dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
 
 /** Used when resetting database */
 const resetDb = async (): Promise<void> => {

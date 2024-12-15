@@ -35,7 +35,7 @@
     "paths": {},
     "baseUrl": "./src/"
   },
-  "include": ["./src/**/*", "./src/__tests__/**/*"],
+  "include": ["./src/**/*"],
   "exclude": [
     "node_modules",
     "build",
