@@ -1,11 +1,10 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import config from '../config';
+import { fileURLToPath } from 'url';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
-
-import config from '../config';
-import { fileURLToPath } from 'url';
 
 const knexConfig: { [key: string]: unknown } = {
   test: {
