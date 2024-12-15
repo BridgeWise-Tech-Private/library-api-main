@@ -6,7 +6,7 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 /** Used when resetting database */
-const resetDb = async () => {
+const resetDb = async (): Promise<void> => {
   try {
     const { current_database: currentDb } = (
       await knex.raw('SELECT current_database()')

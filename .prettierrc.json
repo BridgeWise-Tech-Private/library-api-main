@@ -1,0 +1,11 @@
+{
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth": 120,
+  "semi": true,
+  "useTabs": false,
+  "quoteProps": "consistent",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "plugins": ["prettier-edgejs"]
+}

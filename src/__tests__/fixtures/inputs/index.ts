@@ -5,4 +5,4 @@ export default {
     genre: 'fiction',
     yearPublished: 1500
   }
-}
+};

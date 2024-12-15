@@ -6,7 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 import config from '../config';
 
-const knexConfig: { [key: string]: any } = {
+const knexConfig: { [key: string]: unknown } = {
   test: {
     client: 'postgresql',
     migrations: {
