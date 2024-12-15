@@ -29,7 +29,7 @@ export const filterProfanity = (str: string): string => {
   return profanityFilter.clean(str);
 };
 
-export const filterObjStringsForProfanity = <T extends { [key: string]: unknown }>(
+export const filterObjStringsForProfanity = <T extends { [key: string]: unknown } | CreateBookInput | UpdateBookInput>(
   obj: T
 ): T => {
   const filtered: { [key: string]: unknown } = {};

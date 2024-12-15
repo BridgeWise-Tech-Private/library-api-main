@@ -1,6 +1,7 @@
-const knex = require('../db/knex').default;
+import knex from '../db/knex';
 
-module.exports = async () => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export default async () => {
   console.log('Closing database connection...');
   await knex.destroy();
 };

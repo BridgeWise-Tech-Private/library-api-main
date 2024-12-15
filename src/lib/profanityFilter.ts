@@ -1,4 +1,4 @@
-import Filter from 'bad-words';
+import { Filter } from 'bad-words';
 
 /** bad-words filters for these words automatically:
  ** https://github.com/web-mech/badwords/blob/master/lib/lang.json

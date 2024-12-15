@@ -1,3 +1,3 @@
-import inputs from './inputs/index.js';
+import inputs from './inputs/index';
 
 export default { inputs };

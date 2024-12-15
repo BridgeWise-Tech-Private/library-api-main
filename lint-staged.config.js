@@ -2,5 +2,5 @@
 export default {
   'package.json': 'sort-package-json',
   '*.{ts,tsx}': 'eslint --max-warnings=0 . --ext=.ts --fix',
-  '**/*.ts?(x)': () => 'tsx --tsconfig tsconfig.json',
+  '**/*.ts?(x)': () => 'tsx --tsconfig tsconfig.json ./src/*',
 };

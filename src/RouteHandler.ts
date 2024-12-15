@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import context from './context.js';
-import { castGetBooksParams } from './utils/index.js';
-import requireApiKey from './validations/requireApiKey.js';
+import context from './context';
+import { castGetBooksParams } from './utils/index';
+import requireApiKey from './validations/requireApiKey';
 
 const { booksService } = context.services;
 

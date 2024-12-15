@@ -7,7 +7,7 @@ export const delAllUserAddedBooks = async (): Promise<void> => {
 
 export const updateBook = async (
   bookId: string,
-  inputs: { [key: string]: string }
+  inputs: { [key: string]: string | number }
 ): Promise<void> => {
   await db('books').where({ id: bookId }).update(inputs, '*');
 };

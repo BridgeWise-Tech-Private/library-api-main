@@ -1,7 +1,7 @@
-import context from '../../context.js';
-import fixtures from '../fixtures/index.js';
-import booksSeeds from '../../db/fixtures/books.js';
-import { delAllUserAddedBooks, updateBook } from '../utils/dbUtils.js';
+import context from '../../context';
+import fixtures from '../fixtures/index';
+import booksSeeds from '../../db/fixtures/books';
+import { delAllUserAddedBooks, updateBook } from '../utils/dbUtils';
 
 // Test DB is dropped, migrated and seeded on each `npm run test`
 // Therefore test run starts with a freshly seeded DB state, with books in src/db/fixtures/books
@@ -18,22 +18,22 @@ const {
 describe('getBooks', () => {
   it('Gets all books', async () => {
     const books = await booksService.getBooks();
-    expect(books.every((b: Record<string, unknown>) => booksSeeds.some((s) => s.id === b.id)));
+    expect(books.every((b: Book) => booksSeeds.some((s) => s.id === b.id)));
   });
   it('Filters by checked out: true', async () => {
     await updateBook(booksSeeds[0].id, { checkedOut: 1 });
     const books = await booksService.getBooks({ checkedOut: true });
-    expect(books.every((b: Record<string, unknown>) => b.checkedOut)).toBe(true);
+    expect(books.every((b: Book) => b.checkedOut)).toBe(true);
   });
   it('Filters by checked out: false', async () => {
     const books = await booksService.getBooks({ checkedOut: false });
-    expect(books.every((b: Record<string, unknown>) => !b.checkedOut)).toBe(true);
+    expect(books.every((b: Book) => !b.checkedOut)).toBe(true);
   });
   it('Filters by search keyword for artist or title', async () => {
     const search = 'borges';
     const books = await booksService.getBooks({ search });
     expect(
-      books.every((b: Record<string, unknown>) => {
+      books.every((b: Book) => {
         return (
           (b.title as string).match(new RegExp(search, 'i')) ||
           (b.author as string).match(new RegExp(search, 'i'))
@@ -44,7 +44,7 @@ describe('getBooks', () => {
   it('Filters by genre', async () => {
     const genre = 'fiction';
     const books = await booksService.getBooks({ genre });
-    expect(books.every((b: Record<string, unknown>) => (b.genre as string).match(new RegExp(genre, 'i')))).toBe(true);
+    expect(books.every((b: Book) => (b.genre as string).match(new RegExp(genre, 'i')))).toBe(true);
   });
   it('Filters by search, checkedOut and genre', async () => {
     const search = 'borges';
@@ -52,15 +52,15 @@ describe('getBooks', () => {
     const checkedOut = true;
     const books = await booksService.getBooks({ search, genre, checkedOut });
     expect(
-      books.every((b: Record<string, unknown>) => {
+      books.every((b: Book) => {
         return (
           (b.title as string).match(new RegExp(search, 'i')) ||
           (b.author as string).match(new RegExp(search, 'i'))
         );
       })
     ).toBe(true);
-    expect(books.every((b: Record<string, unknown>) => b.genre === genre)).toBe(true);
-    expect(books.every((b: Record<string, unknown>) => b.checkedOut === checkedOut)).toBe(true);
+    expect(books.every((b: Book) => b.genre === genre)).toBe(true);
+    expect(books.every((b: Book) => b.checkedOut === checkedOut)).toBe(true);
   });
 });
 
