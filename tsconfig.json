@@ -12,6 +12,7 @@
       "ES2020.Symbol.WellKnown",
       "DOM"
     ],
+    "allowJs": true,
     "strict": true,
     "declaration": false,
     "noImplicitAny": true,
