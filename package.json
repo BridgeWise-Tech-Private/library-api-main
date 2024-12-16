@@ -29,7 +29,7 @@
   "author": "claire.froelich@postman.com",
   "license": "ISC",
   "dependencies": {
-    "bad-words": "^3.0.4",
+    "bad-words": "^4.0.0",
     "dotenv": "^16.4.7",
     "fastify": "^3.27.4",
     "fastify-error": "^1.0.0",
