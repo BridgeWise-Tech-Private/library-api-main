@@ -30,7 +30,7 @@
     "prepare": "node .husky/install.mjs",
     "psql": "psql -U librarian library_api_dev",
     "start": "npm run build && NODE_ENV=production node dist/server.js",
-    "test": "npm run db:test:pristine && NODE_ENV=test NODE_OPTIONS='$NODE_OPTIONS --experimental-vm-modules'",
+    "test": "npm run db:test:pristine && NODE_ENV=test NODE_OPTIONS='$NODE_OPTIONS --experimental-vm-modules' jest",
     "test:watch": "npm run db:test:pristine && NODE_ENV=test jest --watch",
     "typecheck": "tsx --noEmit"
   },
@@ -61,6 +61,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
+    "jest": "^29.7.0",
     "js-yaml": "^4.1.0",
     "lint-staged": "^15.2.11",
     "nodemon": "^3.1.9",
