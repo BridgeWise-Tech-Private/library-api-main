@@ -32,12 +32,12 @@
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
-    "types": ["jest", "node"],
+    "types": ["node"],
     "paths": {},
     "baseUrl": "./src/",
     // "allowJs": true
   },
-  "include": ["./src/**/*", "jest.config.js"],
+  "include": ["./src/**/*.ts"],
   "exclude": [
     "node_modules",
     "build",
