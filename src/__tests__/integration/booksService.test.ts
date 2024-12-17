@@ -2,6 +2,7 @@ import context from '../../context';
 import fixtures from '../fixtures/index';
 import booksSeeds from '../../db/fixtures/books';
 import { delAllUserAddedBooks, updateBook } from '../utils/dbUtils';
+import { describe, afterAll, it, expect } from 'vitest';
 
 // Test DB is dropped, migrated and seeded on each `npm run test`
 // Therefore test run starts with a freshly seeded DB state, with books in src/db/fixtures/books
