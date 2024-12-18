@@ -1,6 +1,6 @@
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import openapiGlue from 'fastify-openapi-glue';
-import RouteHandler from './RouteHandler';
+import RouteHandler from '#src/RouteHandler';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

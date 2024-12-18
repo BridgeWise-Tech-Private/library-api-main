@@ -1,4 +1,4 @@
-import db from '../../db/knex';
+import db from '#db/knex';
 
 // User added books have isPermanentCollection: false property
 export const delAllUserAddedBooks = async (): Promise<void> => {

@@ -1,4 +1,4 @@
-import knex from '../knex';
+import knex from '#db/knex';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';

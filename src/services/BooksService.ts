@@ -1,8 +1,8 @@
-import BooksDal from './dals/BooksDal';
+import BooksDal from '#services/dals/BooksDal';
 
-import ensureBookExists from '../validations/ensureBookExists';
-import ensureNotPermanentCollection from '../validations/ensureNotPermanentCollection';
-import { filterObj, filterObjStringsForProfanity } from '../utils';
+import ensureBookExists from '#validations/ensureBookExists';
+import ensureNotPermanentCollection from '#validations/ensureNotPermanentCollection';
+import { filterObj, filterObjStringsForProfanity } from '#utils/index';
 
 class BooksService {
   booksDal: BooksDal;
@@ -11,16 +11,16 @@ class BooksService {
     this.booksDal = booksDal;
   }
 
-  getBook = async ({ id }: IdParams): Promise<Book> => {
+  getBook = async ({ id }: IdParams): Promise<BookType> => {
     const book = await ensureBookExists({ id }, this.booksDal);
     return book;
   };
 
-  getBooks = async (params: GetBooksParams = {}): Promise<Book[]> => {
+  getBooks = async (params: GetBooksParams = {}): Promise<BookType[]> => {
     return this.booksDal.getBooks(params);
   };
 
-  createBook = async (input: CreateBookInput): Promise<Book> => {
+  createBook = async (input: CreateBookInput): Promise<BookType> => {
     const filteredInput = filterObj(input, [
       'title',
       'author',
@@ -34,7 +34,7 @@ class BooksService {
   updateBook = async (
     { id }: IdParams,
     input: UpdateBookInput
-  ): Promise<Book> => {
+  ): Promise<BookType> => {
     const book = await ensureBookExists({ id }, this.booksDal);
     ensureNotPermanentCollection(book);
     const filteredInput = filterObj(input, [

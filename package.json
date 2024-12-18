@@ -5,12 +5,23 @@
   "license": "ISC",
   "author": "claire.froelich@postman.com",
   "type": "module",
+  "imports": {
+    "#db/*": "./build/db/*.js",
+    "#models/*": "./build/models/*.js",
+    "#services/*": "./build/services/*.js",
+    "#src/*": "./build/*.js",
+    "#test/*": "./build/__tests__/*.js",
+    "#validations/*": "./build/validations/*.js",
+    "#utils/*": "./build/utils/*.js",
+    "#lib/*": "./build/lib/*.js",
+    "#errors/*": "./build/errors/*.js"
+  },
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && tsx -p tsconfig.build.json && npm run copy-spec",
-    "clean": "rm -fr dist",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run copy-spec",
+    "clean": "rm -fr build",
     "commit": "git-cz",
-    "copy-spec": "cp src/schema.yaml dist/schema.yaml",
+    "copy-spec": "cp src/schema.yaml build/schema.yaml",
     "db:dev:latest": "NODE_ENV=development NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts migrate:latest",
     "db:dev:pristine": "npm run db:dev:reset && npm run db:dev:latest && npm run db:dev:seed",
     "db:dev:reset": "NODE_ENV=development tsx ./src/db/helpers/resetDb.ts",
@@ -29,11 +40,33 @@
     "lint": "eslint . --ext=.ts",
     "prepare": "node .husky/install.mjs",
     "psql": "psql -U librarian library_api_dev",
-    "start": "npm run build && NODE_ENV=production node dist/server.js",
+    "start": "npm run build && NODE_ENV=production node build/server.js",
     "test": "npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
     "test:watch": "npm run db:test:pristine && NODE_ENV=test npx vitest --watch",
-    "typecheck": "tsx --noEmit"
+    "typecheck": "tsc --noEmit"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "prettier": ".prettierrc.json",
+  "eslintConfig": {
+    "plugins": [
+      "prettier"
+    ],
+    "extends": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
   "dependencies": {
     "@fastify/error": "^4.0.0",
     "bad-words": "^4.0.0",

@@ -1,9 +1,8 @@
-import BooksService from './services/BooksService';
-import BooksDal from './services/dals/BooksDal';
-import knex from './db/knex';
+import BooksService from '#services/BooksService';
+import BooksDal from '#services/dals/BooksDal';
 
 // Build DALS
-const booksDal = new BooksDal(knex);
+const booksDal = new BooksDal();
 
 const dals = {
   booksDal

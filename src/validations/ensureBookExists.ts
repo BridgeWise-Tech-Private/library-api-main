@@ -1,5 +1,5 @@
-import errors from '../errors';
-import BooksDal from '../services/dals/BooksDal';
+import errors from '#errors/index';
+import BooksDal from '#services/dals/BooksDal';
 
 const { NotFoundError } = errors;
 
@@ -7,7 +7,7 @@ const { NotFoundError } = errors;
 const ensureBookExists = async (
   { id }: IdParams,
   booksDal: BooksDal
-): Promise<Book> => {
+): Promise<BookType> => {
   const book = await booksDal.getBook({ id });
   if (!book) {
     throw new NotFoundError(`Book with id '${id}' not found`);

@@ -1,6 +1,6 @@
 import { type FastifyRequest } from 'fastify';
-import config from '../config';
-import errors from '../errors';
+import config from '#src/config';
+import errors from '#errors/index';
 
 const { UnauthorizedError } = errors;
 
