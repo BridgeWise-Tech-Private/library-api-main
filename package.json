@@ -44,7 +44,7 @@
     "pg": "^8.13.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
+    "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@types/bad-words": "^3.0.3",
