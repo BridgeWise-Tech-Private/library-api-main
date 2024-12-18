@@ -1,13 +1,13 @@
-import db from '#db/knex';
+import books from '#models/books';
 
 // User added books have isPermanentCollection: false property
 export const delAllUserAddedBooks = async (): Promise<void> => {
-  await db('books').del().where({ isPermanentCollection: false });
+  await books.query.delete().where({ isPermanentCollection: false });
 };
 
 export const updateBook = async (
   bookId: string,
   inputs: { [key: string]: string | number }
 ): Promise<void> => {
-  await db('books').where({ id: bookId }).update(inputs, '*');
+  await books.query.where({ id: bookId }).update(inputs, '*');
 };

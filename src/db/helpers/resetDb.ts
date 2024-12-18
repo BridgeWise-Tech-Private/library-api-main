@@ -9,9 +9,7 @@ dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)),
 /** Used when resetting database */
 const resetDb = async (): Promise<void> => {
   try {
-    const { current_database: currentDb } = (
-      await knex.raw('SELECT current_database()')
-    ).rows[0];
+    const { rows: [{ current_database: currentDb }] } = await knex.raw('SELECT current_database()');
     console.log(
       `Dropping data in database '${currentDb}' and clearing migration history...`
     );

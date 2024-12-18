@@ -6,18 +6,18 @@ class BooksDal {
     const query = Book.query.select('*').whereNotNull('id').orderBy('createdAt', 'desc');
 
     if (params.genre) {
-      query.andWhereILike(`genre`, params.genre?.toLocaleLowerCase());
+      query.andWhereILike(Book.columnName('genre'), params.genre?.toLocaleLowerCase());
     }
     if (typeof params.checkedOut === 'boolean') {
       query.andWhere((andQuery) => {
-        andQuery.andWhere('checkedOut', Boolean(params.checkedOut));
+        andQuery.andWhere(Book.columnName('checkedOut'), Boolean(params.checkedOut));
       });
     }
     if (params.search) {
       query.andWhere((andQuery) => {
         andQuery
-          .whereILike('title', params.search?.toLocaleLowerCase())
-          .orWhereILike('author', params.search?.toLocaleLowerCase());
+          .whereILike(Book.columnName('title'), params.search?.toLocaleLowerCase())
+          .orWhereILike(Book.columnName('author'), params.search?.toLocaleLowerCase());
       });
     }
 
