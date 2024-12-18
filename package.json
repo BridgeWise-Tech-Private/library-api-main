@@ -30,7 +30,7 @@
     "prepare": "node .husky/install.mjs",
     "psql": "psql -U librarian library_api_dev",
     "start": "npm run build && NODE_ENV=production node dist/server.js",
-    "test": "npm run db:test:pristine && NODE_ENV=test npx vitest",
+    "test": "npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
     "test:watch": "npm run db:test:pristine && NODE_ENV=test npx vitest --watch",
     "typecheck": "tsx --noEmit"
   },
@@ -51,6 +51,7 @@
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^8.57.1",
     "eslint-import-resolver-node": "^0.3.9",
     "eslint-import-resolver-typescript": "^3.7.0",
