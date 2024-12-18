@@ -1,49 +1,51 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
-import context from './context'
-import { castGetBooksParams } from './utils'
-import requireApiKey from './validations/requireApiKey'
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import context from './context';
+import { castGetBooksParams } from './utils/index';
+import requireApiKey from './validations/requireApiKey';
 
-const { booksService } = context.services
+const { booksService } = context.services;
 
+// eslint-disable-next-line @stylistic/max-len
 // fastify-openapi-glue library expects the method names in the Service class to match the `operationId` from each path in your schema. That's how it will know the request method (GET/POST, etc) and the schema for the request/response of each route
 class RouteHandler {
-  constructor() {}
+  constructor() { }
 
-  healthcheck = (_req: FastifyRequest, res: FastifyReply) => {
-    return res.send({ message: 'ok' })
-  }
 
-  getBooks = async (req: FastifyRequest, res: FastifyReply) => {
-    const params = castGetBooksParams(req.query as GetBooksParamsRaw)
-    const books = await booksService.getBooks(params)
-    return res.send(books)
-  }
+  healthcheck = (_req: FastifyRequest, res: FastifyReply): FastifyReply => {
+    return res.send({ message: 'ok' });
+  };
 
-  createBook = async (req: FastifyRequest, res: FastifyReply) => {
-    requireApiKey(req)
-    const newBook = await booksService.createBook(req.body as CreateBookInput)
-    return res.status(201).send(newBook)
-  }
+  getBooks = async (req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> => {
+    const params = castGetBooksParams(req.query as GetBooksParamsRaw);
+    const books = await booksService.getBooks(params);
+    return res.send(books);
+  };
 
-  getBook = async (req: FastifyRequest, res: FastifyReply) => {
-    const book = await booksService.getBook(req.params as IdParams)
-    return res.send(book)
-  }
+  createBook = async (req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> => {
+    requireApiKey(req);
+    const newBook = await booksService.createBook(req.body as CreateBookInput);
+    return res.status(201).send(newBook);
+  };
 
-  updateBook = async (req: FastifyRequest, res: FastifyReply) => {
-    requireApiKey(req)
-    const params = req.params as IdParams
-    const input = req.body as UpdateBookInput
-    const book = await booksService.updateBook(params, input)
-    return res.send(book)
-  }
+  getBook = async (req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> => {
+    const book = await booksService.getBook(req.params as IdParams);
+    return res.send(book);
+  };
 
-  deleteBook = async (req: FastifyRequest, res: FastifyReply) => {
-    requireApiKey(req)
-    const params = req.params as IdParams
-    await booksService.deleteBook(params)
-    return res.code(204).send()
-  }
+  updateBook = async (req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> => {
+    requireApiKey(req);
+    const params = req.params as IdParams;
+    const input = req.body as UpdateBookInput;
+    const book = await booksService.updateBook(params, input);
+    return res.send(book);
+  };
+
+  deleteBook = async (req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> => {
+    requireApiKey(req);
+    const params = req.params as IdParams;
+    await booksService.deleteBook(params);
+    return res.code(204).send();
+  };
 }
 
-export default RouteHandler
+export default RouteHandler;

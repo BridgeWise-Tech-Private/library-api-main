@@ -38,4 +38,5 @@ interface GetBooksParams {
   genre?: string
 }
 
-type KnexDb = Knex<any, unknown[]>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type KnexDb = Knex<any, unknown[]>;

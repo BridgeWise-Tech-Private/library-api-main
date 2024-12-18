@@ -96,6 +96,6 @@ const books = [
     yearPublished: 1973,
     isPermanentCollection: true
   }
-]
+];
 
-export default books
+export default books;

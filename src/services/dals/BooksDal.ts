@@ -1,10 +1,11 @@
-import { rmNewlines } from '../../utils'
-import { buildAndWhere } from './utils'
+import { rmNewlines } from '../../utils';
+import { buildAndWhere } from './utils';
 
 class BooksDal {
-  db: KnexDb
+  db: KnexDb;
+
   constructor(db: KnexDb) {
-    this.db = db
+    this.db = db;
   }
 
   getBooks = async (params: GetBooksParams): Promise<Book[]> => {
@@ -13,38 +14,39 @@ class BooksDal {
     WHERE id IS NOT NULL
     ${buildAndWhere(params)}
     ORDER BY "createdAt" DESC;
-    `)
+    `);
 
-    return this.db.raw(query).then((r: any) => r.rows)
-  }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.db.raw(query).then((r: any) => r.rows);
+  };
 
   createBook = async (input: CreateBookInput): Promise<Book> => {
     return this.db('books')
       .insert(input)
       .returning('*')
-      .then((r: Book[]) => r[0]) // return one
-  }
+      .then((r: Book[]) => r[0]); // return one
+  };
 
   updateBook = ({ id }: IdParams, input: UpdateBookInput): Promise<Book> => {
     return this.db('books')
       .where({ id })
       .update(input)
       .returning('*')
-      .then((r: Book[]) => r[0]) // return one
-  }
+      .then((r: Book[]) => r[0]); // return one
+  };
 
   getBook = async (params: IdParams): Promise<Book> => {
-    return this.db('books').select().where(params).first() // return one
-  }
+    return this.db('books').select().where(params).first(); // return one
+  };
 
   deleteBook = async (params: IdParams): Promise<void> => {
     return this.db('books')
       .del()
       .where(params)
-      .then((_r: any) => {
-        return
-      })
-  }
+      .then(() => {
+        return;
+      });
+  };
 }
 
-export default BooksDal
+export default BooksDal;

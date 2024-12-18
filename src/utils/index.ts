@@ -1,43 +1,43 @@
-import profanityFilter from '../lib/profanityFilter'
+import profanityFilter from '../lib/profanityFilter';
 
 export const rmNewlines = (str: string): string =>
-  str.replace(/(\r\n|\n|\r)/gm, '')
+  str.replace(/(\r\n|\n|\r)/gm, '');
 
 export const castGetBooksParams = (raw: GetBooksParamsRaw): GetBooksParams => {
   // cast checkedOut to boolean
-  let checkedOut
+  let checkedOut;
   if (raw.checkedOut?.toLocaleLowerCase() === 'true') {
-    checkedOut = true
+    checkedOut = true;
   } else if (raw.checkedOut?.toLocaleLowerCase() === 'false') {
-    checkedOut = false
+    checkedOut = false;
   }
-  const castParams = { ...raw, checkedOut }
-  return castParams
-}
+  const castParams = { ...raw, checkedOut };
+  return castParams;
+};
 
 export const filterObj = <T extends object>(obj: T, keys: string[]): T => {
-  const filteredObj: { [key: string]: any } = {}
+  const filteredObj: { [key: string]: string } = {};
   Object.entries(obj).forEach(([k, v]) => {
     if (keys.includes(k)) {
-      filteredObj[k] = v
+      filteredObj[k] = v;
     }
-  })
-  return filteredObj as T
-}
+  });
+  return filteredObj as T;
+};
 
 export const filterProfanity = (str: string): string => {
-  return profanityFilter.clean(str)
-}
+  return profanityFilter.clean(str);
+};
 
-export const filterObjStringsForProfanity = <T extends { [key: string]: any }>(
+export const filterObjStringsForProfanity = <T extends { [key: string]: unknown } | CreateBookInput | UpdateBookInput>(
   obj: T
 ): T => {
-  const filtered: { [key: string]: any } = {}
+  const filtered: { [key: string]: unknown } = {};
   Object.entries(obj).forEach(([k, v]) => {
-    filtered[k] = v
+    filtered[k] = v;
     if (typeof v === 'string') {
-      filtered[k] = filterProfanity(v)
+      filtered[k] = filterProfanity(v);
     }
-  })
-  return filtered as T
-}
+  });
+  return filtered as T;
+};
