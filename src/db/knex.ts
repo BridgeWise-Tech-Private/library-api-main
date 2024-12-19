@@ -1,4 +1,4 @@
-import knexConfigs from './knexfile';
+import knexConfigs from '#db/knexfile';
 import Knex from 'knex';
 
 const env = process.env.NODE_ENV || 'development';

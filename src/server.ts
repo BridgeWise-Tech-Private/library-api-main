@@ -1,8 +1,11 @@
 import Fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import openapiGlue from 'fastify-openapi-glue';
-import RouteHandler from './RouteHandler';
+import RouteHandler from '#src/RouteHandler';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fastifyHelmet from '@fastify/helmet';
+import fastifySensible from '@fastify/sensible';
+import fastifyUnderPressure from '@fastify/under-pressure';
 
 const glueOptions = {
   specification: `${path.dirname(fileURLToPath(import.meta.url))}/schema.yaml`,
@@ -15,6 +18,34 @@ const glueOptions = {
 const fastify = Fastify({ logger: true });
 
 fastify.register(openapiGlue, glueOptions);
+fastify.register(fastifyHelmet, { global: true });
+// TODO: Add implementation(usage) of the following package
+fastify.register(fastifySensible);
+fastify.register(fastifyUnderPressure, {
+  exposeStatusRoute: true,
+  maxEventLoopDelay: 0,
+  maxHeapUsedBytes: 0,
+  maxRssBytes: 0,
+  maxEventLoopUtilization: 0
+});
+
+if (process.env.NODE_ENV === 'development') {
+  const swagger = await import('@fastify/swagger');
+  const swaggerUi = await import('@fastify/swagger-ui');
+
+  await fastify.register(swagger, {
+    mode: 'static',
+    specification: {
+      path: glueOptions.specification,
+      baseDir: `${path.dirname(fileURLToPath(import.meta.url))}`,
+    },
+  });
+
+  await fastify.register(swaggerUi, {
+    // baseDir: `${path.dirname(fileURLToPath(import.meta.url))}`,
+    routePrefix: '/docs/swagger',
+  });
+}
 
 /** Shim for catching validation errors and returning 400 */
 /** For some reason fastify isn't handling these */
@@ -42,3 +73,7 @@ fastify.listen({ port: PORT }, (err, address) => {
   }
   console.log(`Server listening at ${address}`);
 });
+
+const fastifyApp = fastify;
+
+export default fastifyApp;

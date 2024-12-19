@@ -5,12 +5,23 @@
   "license": "ISC",
   "author": "claire.froelich@postman.com",
   "type": "module",
-  "main": "index.js",
+  "imports": {
+    "#db/*": "./build/db/*.js",
+    "#models/*": "./build/models/*.js",
+    "#services/*": "./build/services/*.js",
+    "#src/*": "./build/*.js",
+    "#test/*": "./build/__tests__/*.js",
+    "#validations/*": "./build/validations/*.js",
+    "#utils/*": "./build/utils/*.js",
+    "#lib/*": "./build/lib/*.js",
+    "#errors/*": "./build/errors/*.js"
+  },
+  "main": "./src/server.ts",
   "scripts": {
-    "build": "npm run clean && tsx -p tsconfig.build.json && npm run copy-spec",
-    "clean": "rm -fr dist",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run copy-spec",
+    "clean": "rm -fr build",
     "commit": "git-cz",
-    "copy-spec": "cp src/schema.yaml dist/schema.yaml",
+    "copy-spec": "cp src/schema.yaml build/schema.yaml",
     "db:dev:latest": "NODE_ENV=development NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts migrate:latest",
     "db:dev:pristine": "npm run db:dev:reset && npm run db:dev:latest && npm run db:dev:seed",
     "db:dev:reset": "NODE_ENV=development tsx ./src/db/helpers/resetDb.ts",
@@ -24,18 +35,43 @@
     "db:test:pristine": "npm run db:test:reset && npm run db:test:latest && npm run db:test:seed",
     "db:test:reset": "NODE_ENV=test tsx ./src/db/helpers/resetDb.ts",
     "db:test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts seed:run",
-    "dev": "nodemon",
+    "dev": "tsx watch .",
     "format": "prettier --write .",
     "lint": "eslint . --ext=.ts",
     "prepare": "node .husky/install.mjs",
     "psql": "psql -U librarian library_api_dev",
-    "start": "npm run build && NODE_ENV=production node dist/server.js",
-    "test": "npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
+    "start": "npm run build && NODE_ENV=production node build/server.js",
+    "test": "npm run build && npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
     "test:watch": "npm run db:test:pristine && NODE_ENV=test npx vitest --watch",
-    "typecheck": "tsx --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "prettier": ".prettierrc.json",
+  "eslintConfig": {
+    "plugins": [
+      "prettier"
+    ],
+    "extends": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
   "dependencies": {
     "@fastify/error": "^4.0.0",
+    "@fastify/helmet": "^13.0.0",
+    "@fastify/sensible": "^6.0.2",
+    "@fastify/under-pressure": "^9.0.2",
     "bad-words": "^4.0.0",
     "dotenv": "^16.4.7",
     "fastify": "^5.1.0",
@@ -46,6 +82,8 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/swagger-ui": "^5.2.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@types/bad-words": "^3.0.3",
     "@types/node": "^22.10.2",

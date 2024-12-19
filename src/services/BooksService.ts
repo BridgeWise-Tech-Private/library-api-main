@@ -1,8 +1,8 @@
-import BooksDal from './dals/BooksDal';
+import BooksDal from '#services/dals/BooksDal';
 
-import ensureBookExists from '../validations/ensureBookExists';
-import ensureNotPermanentCollection from '../validations/ensureNotPermanentCollection';
-import { filterObj, filterObjStringsForProfanity } from '../utils';
+import ensureBookExists from '#validations/ensureBookExists';
+import ensureNotPermanentCollection from '#validations/ensureNotPermanentCollection';
+import { filterObj, filterObjStringsForProfanity } from '#utils/index';
 
 class BooksService {
   booksDal: BooksDal;
@@ -11,16 +11,16 @@ class BooksService {
     this.booksDal = booksDal;
   }
 
-  getBook = async ({ id }: IdParams): Promise<Book> => {
-    const book = await ensureBookExists({ id }, this.booksDal);
+  getBook = async ({ id }: IdParams): Promise<BookType> => {
+    const book = await ensureBookExists({ id });
     return book;
   };
 
-  getBooks = async (params: GetBooksParams = {}): Promise<Book[]> => {
+  getBooks = async (params: GetBooksParams = {}): Promise<BookType[]> => {
     return this.booksDal.getBooks(params);
   };
 
-  createBook = async (input: CreateBookInput): Promise<Book> => {
+  createBook = async (input: CreateBookInput): Promise<BookType> => {
     const filteredInput = filterObj(input, [
       'title',
       'author',
@@ -34,8 +34,8 @@ class BooksService {
   updateBook = async (
     { id }: IdParams,
     input: UpdateBookInput
-  ): Promise<Book> => {
-    const book = await ensureBookExists({ id }, this.booksDal);
+  ): Promise<BookType> => {
+    const book = await ensureBookExists({ id });
     ensureNotPermanentCollection(book);
     const filteredInput = filterObj(input, [
       'title',
@@ -51,7 +51,7 @@ class BooksService {
   };
 
   deleteBook = async ({ id }: IdParams): Promise<void> => {
-    const book = await ensureBookExists({ id }, this.booksDal);
+    const book = await ensureBookExists({ id });
     ensureNotPermanentCollection(book);
 
     return this.booksDal.deleteBook({ id });
