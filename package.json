@@ -16,7 +16,7 @@
     "#lib/*": "./build/lib/*.js",
     "#errors/*": "./build/errors/*.js"
   },
-  "main": "index.js",
+  "main": "./src/server.ts",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.build.json && npm run copy-spec",
     "clean": "rm -fr build",
@@ -35,7 +35,7 @@
     "db:test:pristine": "npm run db:test:reset && npm run db:test:latest && npm run db:test:seed",
     "db:test:reset": "NODE_ENV=test tsx ./src/db/helpers/resetDb.ts",
     "db:test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts seed:run",
-    "dev": "nodemon",
+    "dev": "tsx watch .",
     "format": "prettier --write .",
     "lint": "eslint . --ext=.ts",
     "prepare": "node .husky/install.mjs",
@@ -79,6 +79,8 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/swagger-ui": "^5.2.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@types/bad-words": "^3.0.3",
     "@types/node": "^22.10.2",

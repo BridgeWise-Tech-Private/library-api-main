@@ -16,6 +16,24 @@ const fastify = Fastify({ logger: true });
 
 fastify.register(openapiGlue, glueOptions);
 
+if (process.env.NODE_ENV === 'development') {
+  const swagger = await import('@fastify/swagger');
+  const swaggerUi = await import('@fastify/swagger-ui');
+
+  await fastify.register(swagger, {
+    mode: 'static',
+    specification: {
+      path: glueOptions.specification,
+      baseDir: `${path.dirname(fileURLToPath(import.meta.url))}`,
+    },
+  });
+
+  await fastify.register(swaggerUi, {
+    // baseDir: `${path.dirname(fileURLToPath(import.meta.url))}`,
+    routePrefix: '/docs/swagger',
+  });
+}
+
 /** Shim for catching validation errors and returning 400 */
 /** For some reason fastify isn't handling these */
 /** Debug someday.... */
