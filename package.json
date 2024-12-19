@@ -18,7 +18,7 @@
   },
   "main": "./src/server.ts",
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json && npm run copy-spec",
+    "build": "npm run clean && npx tsc -p tsconfig.build.json && npm run copy-spec",
     "clean": "rm -fr build",
     "commit": "git-cz",
     "copy-spec": "cp src/schema.yaml build/schema.yaml",
@@ -43,7 +43,7 @@
     "start": "npm run build && NODE_ENV=production node build/server.js",
     "test": "npm run build && npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
     "test:watch": "npm run db:test:pristine && NODE_ENV=test npx vitest --watch",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "npx tsc --project tsconfig.json --noEmit"
   },
   "config": {
     "commitizen": {
