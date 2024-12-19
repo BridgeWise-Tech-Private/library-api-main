@@ -3,6 +3,9 @@ import openapiGlue from 'fastify-openapi-glue';
 import RouteHandler from '#src/RouteHandler';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fastifyHelmet from '@fastify/helmet';
+import fastifySensible from '@fastify/sensible';
+import fastifyUnderPressure from '@fastify/under-pressure';
 
 const glueOptions = {
   specification: `${path.dirname(fileURLToPath(import.meta.url))}/schema.yaml`,
@@ -15,6 +18,16 @@ const glueOptions = {
 const fastify = Fastify({ logger: true });
 
 fastify.register(openapiGlue, glueOptions);
+fastify.register(fastifyHelmet, { global: true });
+// TODO: Add implementation(usage) of the following package
+fastify.register(fastifySensible);
+fastify.register(fastifyUnderPressure, {
+  exposeStatusRoute: true,
+  maxEventLoopDelay: 0,
+  maxHeapUsedBytes: 0,
+  maxRssBytes: 0,
+  maxEventLoopUtilization: 0
+});
 
 if (process.env.NODE_ENV === 'development') {
   const swagger = await import('@fastify/swagger');
