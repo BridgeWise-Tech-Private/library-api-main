@@ -64,9 +64,9 @@ fastify.setErrorHandler(function (
   res.status(err.statusCode || 500).send(err);
 });
 
-const PORT = Number(process.env.PORT) || 4000;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 
-fastify.listen({ port: PORT }, (err, address) => {
+fastify.listen({ port: PORT, host: '0.0.0.0' }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
