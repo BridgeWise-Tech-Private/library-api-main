@@ -42,3 +42,7 @@ fastify.listen({ port: PORT }, (err, address) => {
   }
   console.log(`Server listening at ${address}`);
 });
+
+const fastifyApp = fastify;
+
+export default fastifyApp;
