@@ -1,4 +1,4 @@
-import profanityFilter from '../lib/profanityFilter';
+import profanityFilter from '#lib/profanityFilter';
 
 export const rmNewlines = (str: string): string =>
   str.replace(/(\r\n|\n|\r)/gm, '');

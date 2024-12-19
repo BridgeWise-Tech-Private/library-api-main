@@ -1,9 +1,9 @@
-import knex from 'knex';
-import books from '../fixtures/books';
+import booksData from '#db/fixtures/books';
+import books from '#models/books';
 
-export async function seed(knex: knex.Knex): Promise<void> {
+export async function seed(): Promise<void> {
   // Deletes ALL existing entries
-  await knex('books').del();
+  await books.query.delete();
 
-  await knex('books').insert(books);
+  await books.query.insert(booksData);
 }

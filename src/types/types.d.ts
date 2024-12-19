@@ -1,4 +1,4 @@
-interface Book {
+interface BookType {
   id: string
   title: string
   author: string
@@ -9,34 +9,19 @@ interface Book {
   createdAt: string
 }
 
-interface CreateBookInput {
-  title: string
-  author: string
-  genre: string
-  yearPublished: number
-}
-interface UpdateBookInput {
-  title?: string
-  author?: string
-  genre?: string
-  yearPublished?: number
-  checkedOut?: boolean
-}
+type CreateBookInput = Pick<BookType, 'title' | 'author' | 'genre' | 'yearPublished'>;
 
-interface IdParams {
+type UpdateBookInput = Partial<Omit<BookType, 'id' | 'isPermanentCollection' | 'createdAt'>>;
+
+type IdParams = {
   id: string
-}
-interface GetBooksParamsRaw {
+};
+
+type GetBooksParamsRaw = Partial<Pick<BookType, 'genre'>> & {
   search?: string
   checkedOut?: string
-  genre?: string
-}
+};
 
-interface GetBooksParams {
-  search?: string
+type GetBooksParams = Omit<GetBooksParamsRaw, 'checkedOut'> & {
   checkedOut?: boolean
-  genre?: string
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type KnexDb = Knex<any, unknown[]>;
+};

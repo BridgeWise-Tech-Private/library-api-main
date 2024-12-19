@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./",
+    "rootDir": "./src",
     "outDir": "./build",
     "target": "ES2019",
     "module": "ESNext",
@@ -35,9 +35,20 @@
     "types": ["node"],
     "paths": {},
     "baseUrl": "./src/",
-    // "allowJs": true
+    "noImplicitOverride": true,
   },
-  "include": ["./src/**/*.ts"],
+  "path": {
+    "#db/*": "db/*",
+    "#models/*": "models/*",
+    "#services/*": "services/*",
+    "#src/*": "/*",
+    "#test/*": "__tests__/*",
+    "#validations/*": "validations/*",
+    "#utils/*": "utils/*",
+    "#lib/*": "lib/*",
+    "#errors/*": "errors/*"
+  },
+  "include": ["./src/**/*.*"],
   "exclude": [
     "node_modules",
     "build",

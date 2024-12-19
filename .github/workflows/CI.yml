@@ -28,6 +28,8 @@ jobs:
         run: |
           echo "NEON_DB_CONNECTION_STRING=${{ secrets.NEON_DB_CONNECTION_STRING }}" >> $GITHUB_ENV
           echo "NODE_ENV=test" >> $GITHUB_ENV
+          echo "DEMO_API_KEY_VAL=test1234" >> $GITHUB_ENV
+
         
       - name: Run tests
         run: npm test

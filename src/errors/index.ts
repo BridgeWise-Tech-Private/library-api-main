@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '#src/config';
 
 /** No need for call stack, so not extending Error class */
 

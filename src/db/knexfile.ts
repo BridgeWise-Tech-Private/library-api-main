@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
-import config from '../config';
+import config from '#src/config';
 import { fileURLToPath } from 'url';
 
 // Load environment variables from .env file

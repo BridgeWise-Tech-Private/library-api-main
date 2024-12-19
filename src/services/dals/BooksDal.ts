@@ -1,51 +1,49 @@
-import { rmNewlines } from '../../utils';
-import { buildAndWhere } from './utils';
+import Book from '#models/books';
+
 
 class BooksDal {
-  db: KnexDb;
+  getBooks = async (params: GetBooksParams): Promise<BookType[]> => {
+    const query = Book.query.select('*').whereNotNull('id').orderBy('createdAt', 'desc');
 
-  constructor(db: KnexDb) {
-    this.db = db;
-  }
+    if (params.genre) {
+      query.andWhereILike(Book.columnName('genre'), params.genre?.toLocaleLowerCase());
+    }
+    if (typeof params.checkedOut === 'boolean') {
+      query.andWhere((andQuery) => {
+        andQuery.andWhere(Book.columnName('checkedOut'), Boolean(params.checkedOut));
+      });
+    }
+    if (params.search) {
+      query.andWhere((andQuery) => {
+        andQuery
+          .whereILike(Book.columnName('title'), params.search?.toLocaleLowerCase())
+          .orWhereILike(Book.columnName('author'), params.search?.toLocaleLowerCase());
+      });
+    }
 
-  getBooks = async (params: GetBooksParams): Promise<Book[]> => {
-    const query = rmNewlines(`
-    SELECT * FROM books
-    WHERE id IS NOT NULL
-    ${buildAndWhere(params)}
-    ORDER BY "createdAt" DESC;
-    `);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return this.db.raw(query).then((r: any) => r.rows);
+    return query;
   };
 
-  createBook = async (input: CreateBookInput): Promise<Book> => {
-    return this.db('books')
-      .insert(input)
-      .returning('*')
-      .then((r: Book[]) => r[0]); // return one
+  createBook = async (input: CreateBookInput): Promise<BookType> => {
+    return Book.insert(input); // return one
   };
 
-  updateBook = ({ id }: IdParams, input: UpdateBookInput): Promise<Book> => {
-    return this.db('books')
+  updateBook = async ({ id }: IdParams, input: UpdateBookInput): Promise<BookType> => {
+    return Book.query
       .where({ id })
       .update(input)
       .returning('*')
-      .then((r: Book[]) => r[0]); // return one
+      .then((r: BookType[]) => r[0]); // return one
   };
 
-  getBook = async (params: IdParams): Promise<Book> => {
-    return this.db('books').select().where(params).first(); // return one
+  getBook = async (params: IdParams): Promise<BookType> => {
+    return Book.query.select('*').where(params).first(); // return one
   };
 
   deleteBook = async (params: IdParams): Promise<void> => {
-    return this.db('books')
-      .del()
+    return Book.query
       .where(params)
-      .then(() => {
-        return;
-      });
+      .delete();
   };
 }
 
