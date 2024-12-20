@@ -10,17 +10,15 @@ channel = "stable-24_11"
 # args=["npm ci", "npm run build", "rm -rf ./node_modules", "npm ci --omit=dev", "npm run start"]
 
 [deployment]
-build=["npm ci", "npm run build", "rm -rf ./node_modules", "npm ci --omit=dev", "npm run start"]
+build="npm ci && npm run build && rm -rf ./node_modules && npm ci --omit=dev && npm run start"
 run = "npm start"
 
-[run]
+# [run]
 # args = ["sh", "-c", "npm run start"]
-args = ["npm run start"]
+# args = ["npm run start"]
 
 [env]
 NODE_ENV = "production"
-NEON_DB_CONNECTION_STRING=$DATABASE_URL
-PROD_DB_CONNECTION_URL=$DATABASE_URL
 
 
 deploymentTarget = "cloudrun"
