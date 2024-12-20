@@ -9,16 +9,14 @@ channel = "stable-24_11"
 # [build]
 # args=["npm ci", "npm run build", "rm -rf ./node_modules", "npm ci --omit=dev", "npm run start"]
 
+[env]
+NODE_ENV = "production"
+
 [deployment]
-build="npm ci && npm run build && rm -rf ./node_modules && npm ci --omit=dev && npm run start"
+build=["sh", "-c", "./build.sh"]
 run = "npm start"
+deploymentTarget = "cloudrun"
 
 # [run]
 # args = ["sh", "-c", "npm run start"]
 # args = ["npm run start"]
-
-[env]
-NODE_ENV = "production"
-
-
-deploymentTarget = "cloudrun"
