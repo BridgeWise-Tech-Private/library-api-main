@@ -3,60 +3,61 @@
   "version": "2.0.0",
   "description": "Library API for managing books",
   "license": "ISC",
-  "author": "claire.froelich@postman.com",
   "type": "module",
   "imports": {
-    "#db/*": "./build/db/*.js",
-    "#models/*": "./build/models/*.js",
-    "#services/*": "./build/services/*.js",
-    "#src/*": "./build/*.js",
-    "#test/*": "./build/__tests__/*.js",
-    "#validations/*": "./build/validations/*.js",
-    "#utils/*": "./build/utils/*.js",
-    "#lib/*": "./build/lib/*.js",
-    "#errors/*": "./build/errors/*.js"
+    "#controllers/*": "./app/controllers/*.js",
+    "#exceptions/*": "./app/exceptions/*.js",
+    "#models/*": "./app/models/*.js",
+    "#mails/*": "./app/mails/*.js",
+    "#services/*": "./app/services/*.js",
+    "#listeners/*": "./app/listeners/*.js",
+    "#events/*": "./app/events/*.js",
+    "#middleware/*": "./app/middleware/*.js",
+    "#validators/*": "./app/validators/*.js",
+    "#providers/*": "./providers/*.js",
+    "#policies/*": "./app/policies/*.js",
+    "#abilities/*": "./app/abilities/*.js",
+    "#database/*": "./database/*",
+    "#tests/*": "./tests/*.js",
+    "#start/*": "./start/*.js",
+    "#config/*": "./config/*.js",
+    "#commands/*": "./commands/*.js",
+    "#utils/*": "./app/utils/*.js",
+    "#libraries/*": "./app/libraries/*.js",
+    "#enums/*": "./contracts/enums/*.js",
+    "#types/*": "./contracts/types/*.js",
+    "#decorators/*": "./app/decorators/*.js",
+    "#request_validators/*": "./app/validators/request_validators/*.js",
+    "#routes/*": "./start/routes/*.js",
+    "#views/*": "./database/views/*.js"
   },
-  "main": "./src/server.ts",
   "scripts": {
-    "build": "npm run clean && npx tsc -p tsconfig.build.json && npm run copy-spec",
-    "clean": "rm -fr build",
+    "build": "node ace build",
     "commit": "git-cz",
-    "copy-spec": "cp src/schema.yaml build/schema.yaml",
-    "db:dev:latest": "NODE_ENV=development NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts migrate:latest",
-    "db:dev:pristine": "npm run db:dev:reset && npm run db:dev:latest && npm run db:dev:seed",
-    "db:dev:reset": "NODE_ENV=development tsx ./src/db/helpers/resetDb.ts",
-    "db:dev:seed": "NODE_ENV=development NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts seed:run",
-    "db:init": "psql $NEON_DB_CONNECTION_STRING -f ./src/db/sql/init.sql",
-    "db:init:prod": "psql $NEON_DB_CONNECTION_STRING --password -f ./src/db/sql/init-prod.sql",
-    "db:migrate:make": "NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts migrate:make",
-    "db:prod:latest": "NODE_ENV=production NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts migrate:latest",
-    "db:prod:seed": "NODE_ENV=production NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts seed:run",
-    "db:test:latest": "NODE_ENV=test NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts  migrate:latest",
-    "db:test:pristine": "npm run db:test:reset && npm run db:test:latest && npm run db:test:seed",
-    "db:test:reset": "NODE_ENV=test tsx ./src/db/helpers/resetDb.ts",
-    "db:test:seed": "NODE_ENV=test NODE_OPTIONS='--import tsx/esm' knex --knexfile ./src/db/knexfile.ts seed:run",
-    "dev": "tsx watch .",
+    "dev": "node ace serve --hmr",
     "format": "prettier --write .",
     "lint": "eslint . --ext=.ts",
     "prepare": "node .husky/install.mjs",
-    "psql": "psql -U librarian library_api_dev",
-    "start": "npm run build && NODE_ENV=production node build/server.js",
-    "test": "npm run build && npm run db:test:pristine && NODE_ENV=test npx vitest run --exclude **/build/**",
-    "test:watch": "npm run db:test:pristine && NODE_ENV=test npx vitest --watch",
-    "typecheck": "npx tsc --project tsconfig.json --noEmit"
+    "release": "standard-version",
+    "release:mock": "npm run release -- --dry-run",
+    "start": "node build/bin/server.js",
+    "test": "node ace test",
+    "typecheck": "tsc --noEmit"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "prettier": ".prettierrc.json",
+  "prettier": ".prettierrc.mjs",
   "eslintConfig": {
     "plugins": [
       "prettier"
     ],
     "extends": [
-      "prettier"
+      "prettier",
+      "@adonisjs/eslint-config/app",
+      "plugin:adonis/typescriptApp"
     ],
     "rules": {
       "prettier/prettier": [
@@ -67,48 +68,67 @@
   "eslintIgnore": [
     "build"
   ],
+  "resolutions": {
+    "strtok3": "8.0.1"
+  },
   "dependencies": {
-    "@fastify/error": "^4.0.0",
-    "@fastify/helmet": "^13.0.0",
-    "@fastify/sensible": "^6.0.2",
-    "@fastify/under-pressure": "^9.0.2",
-    "bad-words": "^4.0.0",
-    "dotenv": "^16.4.7",
-    "fastify": "^5.1.0",
-    "fastify-openapi-glue": "^4.8.0",
-    "knex": "^3.1.0",
-    "pg": "^8.13.1"
+    "@adonisjs/auth": "^9.2.4",
+    "@adonisjs/core": "^6.17.0",
+    "@adonisjs/cors": "^2.2.1",
+    "@adonisjs/lucid": "^21.5.1",
+    "@vinejs/vine": "^3.0.0",
+    "luxon": "^3.5.0",
+    "nanoid": "^5.0.9",
+    "nanoid-dictionary": "^4.3.0",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
+    "@adonisjs/assembler": "^7.8.2",
+    "@adonisjs/eslint-config": "^1.3.0",
+    "@adonisjs/prettier-config": "^1.4.0",
+    "@adonisjs/tsconfig": "^1.4.0",
+    "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
-    "@fastify/swagger": "^9.4.0",
-    "@fastify/swagger-ui": "^5.2.0",
+    "@japa/api-client": "^2.0.4",
+    "@japa/assert": "^3.0.0",
+    "@japa/plugin-adonisjs": "^3.0.1",
+    "@japa/runner": "^3.1.4",
     "@stylistic/eslint-plugin": "^2.12.1",
-    "@types/bad-words": "^3.0.3",
+    "@swc/core": "1.10.1",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
-    "@vitest/coverage-v8": "^2.1.8",
-    "eslint": "^8.57.1",
+    "@types/proxy-addr": "^2.0.3",
+    "@types/source-map-support": "^0.5.10",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^8.57.0",
     "eslint-import-resolver-node": "^0.3.9",
-    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-adonis": "^2.1.1",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.1",
     "git-cz": "^4.9.0",
+    "hot-hook": "^0.4.0",
     "husky": "^9.1.7",
-    "js-yaml": "^4.1.0",
-    "nodemon": "^3.1.9",
+    "pino-pretty": "^13.0.0",
     "prettier": "^3.4.2",
-    "prettier-eslint": "^16.3.0",
     "sort-package-json": "^2.12.0",
-    "ts-jest": "^29.2.5",
     "ts-node-maintained": "^10.9.4",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8",
-    "youch": "^3.3.4",
-    "youch-terminal": "^2.2.3"
+    "typescript": "~5.7"
+  },
+  "pnpm": {
+    "overrides": {
+      "strtok3": "8.0.1"
+    }
+  },
+  "hotHook": {
+    "boundaries": [
+      "./app/controllers/**/*.ts",
+      "./app/middleware/*.ts"
+    ]
+  },
+  "overrides": {
+    "strtok3": "8.0.1"
   }
 }
