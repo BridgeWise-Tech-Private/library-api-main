@@ -27,6 +27,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "noImplicitOverride": true,
     "types": [
       "@adonisjs/core",
       "@adonisjs/repl",
@@ -59,6 +60,9 @@
       "#commands/*": ["./commands/*"],
       "#routes/*": ["./start/routes/*"],
       "#views/*": ["./database/views/*"],
+      "#types/*": ["./contracts/types/*"],
+      "#enums/*": ["./contracts/enums/*"],
+      "#decorators/*": ["./app/decorators/*"],
       "@/*": ["./*"]
     },
   },

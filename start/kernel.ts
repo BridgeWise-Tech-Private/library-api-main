@@ -35,7 +35,6 @@ server.use([
  */
 router.use([
   (): Promise<{ default: MiddlewareAsClass }> => import('@adonisjs/core/bodyparser_middleware'),
-  (): Promise<{ default: MiddlewareAsClass }> => import('@adonisjs/auth/initialize_auth_middleware')
 ]);
 
 /**
@@ -43,5 +42,5 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  auth: (): Promise<{ default: MiddlewareAsClass }> => import('#middleware/auth_middleware')
+  apiKeyRequired: () => import('#middleware/api_key_required_middleware'),
 });
