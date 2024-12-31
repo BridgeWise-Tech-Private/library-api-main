@@ -63,7 +63,7 @@
       "#types/*": ["./contracts/types/*"],
       "#enums/*": ["./contracts/enums/*"],
       "#decorators/*": ["./app/decorators/*"],
-      "@/*": ["./*"]
+      "#crons/*": ["./app/crons/*"]
     },
   },
   "exclude": ["./inertia/**/*", "node_modules", "build", "logs", ".git", ".data"]

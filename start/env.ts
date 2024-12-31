@@ -31,4 +31,11 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   CLIENT_API_KEY: Env.schema.string(),
   HEALTH_CHECK_API_KEY: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the lock package
+  |----------------------------------------------------------
+  */
+  LOCK_STORE: Env.schema.enum(['database', 'memory'] as const)
 });

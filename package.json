@@ -29,7 +29,8 @@
     "#decorators/*": "./app/decorators/*.js",
     "#request_validators/*": "./app/validators/request_validators/*.js",
     "#routes/*": "./start/routes/*.js",
-    "#views/*": "./database/views/*.js"
+    "#views/*": "./database/views/*.js",
+    "#crons/*": "./app/crons/*.js"
   },
   "scripts": {
     "build": "node ace build",
@@ -75,9 +76,11 @@
     "@adonisjs/auth": "^9.2.4",
     "@adonisjs/core": "^6.17.0",
     "@adonisjs/cors": "^2.2.1",
+    "@adonisjs/lock": "^1.1.1",
     "@adonisjs/lucid": "^21.5.1",
     "@vinejs/vine": "^3.0.0",
     "bad-words": "^4.0.0",
+    "cron": "^3.3.2",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "nanoid": "^5.0.9",
