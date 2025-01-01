@@ -17,7 +17,7 @@ export default class SchedulerService {
       try {
         acquired = await lock.acquireImmediately();
         if (!acquired) {
-          logger.info(`[Scheduler] - Job ${jobConfig.key} is already running on another node`);
+          logger.info(`[Scheduler] - Job "${jobConfig.key}" is already running on another node`);
           return;
         }
 

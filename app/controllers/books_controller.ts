@@ -88,7 +88,7 @@ export default class BooksController {
             return response.forbidden();
         }
 
-        await Book.deleteBy({ id });
+        await Book.query().where({ id }).delete();
 
         response.status(204).json(book);
     }
