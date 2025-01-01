@@ -7,7 +7,10 @@ import { middleware } from '#start/kernel';
 router
     .group(() => {
         router.get('/', [BooksController, 'GetBooks']).as('get.all');
-        router.get('/:id', [BooksController, 'GetBooks']).as('get.id').where('id', Utils.ALPHANUMERIC);
+        router
+            .get('/:id', [BooksController, 'GetBooks'])
+            .as('get.id')
+            .where('id', Utils.ALPHABETS_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
 
         router.group(() => {
             router.post('/', [BooksController, 'CreateNewBook']).as('book.create');

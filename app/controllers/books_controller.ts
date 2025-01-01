@@ -15,7 +15,7 @@ export default class BooksController {
             const book = await Book.find(id);
 
             if (!book) {
-                return response.notFound();
+                return response.status(404).json({ message: `Book with id '${id}' not found` });
             }
 
             return response.status(200).json(book);
@@ -62,7 +62,7 @@ export default class BooksController {
         let book = await Book.find(id);
 
         if (!book) {
-            return response.notFound();
+            return response.status(404).json({ message: `Book with id '${id}' not found` });
         }
 
         if (book.isPermanentCollection) {
@@ -81,7 +81,7 @@ export default class BooksController {
         const book = await Book.find(id);
 
         if (!book) {
-            return response.notFound();
+            return response.status(404).json({ message: `Book with id '${id}' not found` });
         }
 
         if (book.isPermanentCollection) {

@@ -26,6 +26,8 @@ export default class Utils {
 
     public static ALPHABETS_WITH_OPTIONAL_SPACE_IN_BETWEEN = /^[a-zA-Z]+ ?[a-zA-Z]*$/;
 
+    public static ALPHABETS_WITH_OPTIONAL_HYPHEN_IN_BETWEEN = /^[a-zA-Z]+-?[a-zA-Z]*$/;
+
     public static SPECIAL_CHARACTERS = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s]/;
 
     public static numberNanoId(size = 15): string {
