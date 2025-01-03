@@ -86,7 +86,7 @@
     "@fastify/swagger-ui": "^5.2.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@types/bad-words": "^3.0.3",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.5",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "@vitest/coverage-v8": "^2.1.8",
