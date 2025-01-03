@@ -9,87 +9,113 @@ import BookIdRequiredRequestValidator from '#validators/request_validators/book_
 export default class BooksController {
     @RequestValidator(GetBookRequestValidator)
     public async GetBooks({ request, response }: HttpContext): Promise<void> {
-        const { id, ...body } = { ...request.all(), ...request.params() };
+        try {
+            const { id, ...body } = { ...request.all(), ...request.params() };
 
-        if (id) {
+            if (id) {
+                const book = await Book.find(id);
+
+                if (!book) {
+                    return response.status(404).json({ message: `Book with id '${id}' not found` });
+                }
+
+                return response.status(200).json(book);
+            }
+
+            const books = await Book.query()
+                .if(body.title, (query) => {
+                    query.whereILike(Book.queryColumn('title'), `%${body.title}%`);
+                })
+                .if(body.author, (query) => {
+                    query.whereILike(Book.queryColumn('author'), `%${body.author}%`);
+                })
+                .if(body.genre, (query) => {
+                    query.whereILike(Book.queryColumn('genre'), `%${body.genre}%`);
+                })
+                .if(body.yearPublished, (query) => {
+                    query.where(Book.queryColumn('yearPublished'), body.yearPublished);
+                })
+                .if([true, false].includes(body.isPermanentCollection), (query) => {
+                    query.where(Book.queryColumn('isPermanentCollection'), body.isPermanentCollection);
+                })
+                .if([true, false].includes(body.checkedOut), (query) => {
+                    query.where(Book.queryColumn('checkedOut'), body.checkedOut);
+                });
+
+            response.status(200).json(books);
+        } catch (err) {
+            console.log(JSON.stringify(err));
+            response.status(500).json({ err });
+        }
+    }
+
+    @RequestValidator(BookCreateRequestValidator)
+    public async CreateNewBook({ request, response }: HttpContext): Promise<void> {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        try {
+            const body = request.all();
+
+            const createdBook = await Book.validateCreate(body);
+
+            response.created(createdBook);
+        } catch (err) {
+            console.log(JSON.stringify(err));
+            response.status(500).json({ err });
+        }
+    }
+
+    @RequestValidator(GetBookRequestValidator)
+    @RequestValidator(BookIdRequiredRequestValidator)
+    public async UpdateBook({ request, response }: HttpContext): Promise<void> {
+        try {
+            const { id, ...body } = { ...request.all(), ...request.params() };
+
+            let book = await Book.find(id);
+
+            if (!book) {
+                return response.status(404).json({ message: `Book with id '${id}' not found` });
+            }
+
+            if (book.isPermanentCollection) {
+                return response.status(403).json({
+                    "message": `You cannot modify books in the permanent collection! Book with id '${id
+                        }' is in the permanent collection.`
+                });
+            }
+
+            book = await Book.validateUpdate(id, body);
+
+            response.status(200).json(book);
+        } catch (err) {
+            console.log(JSON.stringify(err));
+            response.status(500).json({ err });
+        }
+    }
+
+    @RequestValidator(BookIdRequiredRequestValidator)
+    public async DeleteBook({ request, response }: HttpContext): Promise<void> {
+        try {
+            const { id } = request.params();
+
             const book = await Book.find(id);
 
             if (!book) {
                 return response.status(404).json({ message: `Book with id '${id}' not found` });
             }
 
-            return response.status(200).json(book);
+            if (book.isPermanentCollection) {
+                return response.status(403).json({
+                    "message": `You cannot modify books in the permanent collection! Book with id '${id
+                        }' is in the permanent collection.`
+                });
+            }
+
+            await Book.query().where({ id }).delete();
+
+            response.status(204).json(book);
+        } catch (err) {
+            console.log(JSON.stringify(err));
+            response.status(500).json({ err });
         }
-
-        const books = await Book.query()
-            .if(body.title, (query) => {
-                query.whereILike(Book.queryColumn('title'), `%${body.title}%`);
-            })
-            .if(body.author, (query) => {
-                query.whereILike(Book.queryColumn('author'), `%${body.author}%`);
-            })
-            .if(body.genre, (query) => {
-                query.whereILike(Book.queryColumn('genre'), `%${body.genre}%`);
-            })
-            .if(body.yearPublished, (query) => {
-                query.where(Book.queryColumn('yearPublished'), body.yearPublished);
-            })
-            .if(![undefined, null].includes(body.isPermanentCollection), (query) => {
-                query.where(Book.queryColumn('isPermanentCollection'), body.isPermanentCollection);
-            })
-            .if(![undefined, null].includes(body.checkedOut), (query) => {
-                query.where(Book.queryColumn('checkedOut'), body.checkedOut);
-            });
-
-        response.status(200).json(books);
-    }
-
-    @RequestValidator(BookCreateRequestValidator)
-    public async CreateNewBook({ request, response }: HttpContext): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const body = request.all();
-
-        const createdBook = await Book.validateCreate(body);
-
-        response.created(createdBook);
-    }
-
-    @RequestValidator(GetBookRequestValidator)
-    @RequestValidator(BookIdRequiredRequestValidator)
-    public async UpdateBook({ request, response }: HttpContext): Promise<void> {
-        const { id, ...body } = { ...request.all(), ...request.params() };
-
-        let book = await Book.find(id);
-
-        if (!book) {
-            return response.status(404).json({ message: `Book with id '${id}' not found` });
-        }
-
-        if (book.isPermanentCollection) {
-            return response.forbidden();
-        }
-
-        book = await Book.validateUpdate(id, body);
-
-        response.status(200).json(book);
-    }
-
-    @RequestValidator(BookIdRequiredRequestValidator)
-    public async DeleteBook({ request, response }: HttpContext): Promise<void> {
-        const { id } = request.params();
-
-        const book = await Book.find(id);
-
-        if (!book) {
-            return response.status(404).json({ message: `Book with id '${id}' not found` });
-        }
-
-        if (book.isPermanentCollection) {
-            return response.forbidden();
-        }
-
-        await Book.query().where({ id }).delete();
-
-        response.status(204).json(book);
     }
 }

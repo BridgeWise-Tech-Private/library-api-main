@@ -10,12 +10,16 @@ router
         router
             .get('/:id', [BooksController, 'GetBooks'])
             .as('get.id')
-            .where('id', Utils.ALPHABETS_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
+            .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
 
         router.group(() => {
             router.post('/', [BooksController, 'CreateNewBook']).as('book.create');
-            router.patch('/:id', [BooksController, 'UpdateBook']).as('book.update');
-            router.delete('/:id', [BooksController, 'DeleteBook']).as('book.delete');
+            router.group(() => {
+                router.patch('/', [BooksController, 'UpdateBook']).as('book.update');
+                router.delete('/', [BooksController, 'DeleteBook']).as('book.delete');
+            })
+                .prefix('/:id')
+                .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
         })
             .middleware(middleware.apiKeyRequired());
     })
