@@ -1,16 +1,33 @@
 {
+  "extends": "adonis-preset-ts/tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "exclude": ["./inertia/**/*", "node_modules", "build", "logs", ".git", ".data"],
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./build",
-    "target": "ES2019",
-    "module": "ESNext",
+    "outDir": "build",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "App/*": [
+        "./app/*"
+      ],
+      "Config/*": [
+        "./config/*"
+      ],
+      "Contracts/*": [
+        "./contracts/*"
+      ],
+      "Database/*": [
+        "./database/*"
+      ]
+    },
     "lib": [
       "ES2019",
       "ES2020.BigInt",
       "ES2020.Promise",
       "ES2020.String",
       "ES2020.Symbol.WellKnown",
-      "DOM"
     ],
     "allowJs": true,
     "strict": true,
@@ -36,24 +53,10 @@
     "paths": {},
     "baseUrl": "./src/",
     "noImplicitOverride": true,
-  },
-  "path": {
-    "#db/*": "db/*",
-    "#models/*": "models/*",
-    "#services/*": "services/*",
-    "#src/*": "/*",
-    "#test/*": "__tests__/*",
-    "#validations/*": "validations/*",
-    "#utils/*": "utils/*",
-    "#lib/*": "lib/*",
-    "#errors/*": "errors/*"
-  },
-  "include": ["./src/**/*.*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "logs",
-    ".git",
-    ".data"
-  ]
+    "types": [
+      "@adonisjs/core",
+      "@adonisjs/repl",
+      "@adonisjs/lucid",
+    ],
+  }
 }
