@@ -1,31 +1,25 @@
 /*
 |--------------------------------------------------------------------------
-| Routes file
+| Routes
 |--------------------------------------------------------------------------
 |
-| The routes file is used for defining the HTTP routes.
+| This file is dedicated for defining HTTP routes. A single file is enough
+| for majority of projects, however you can define routes in different
+| files and just make sure to import them inside this file. For example
+|
+| Define routes in following two files
+| ├── start/routes/cart.ts
+| ├── start/routes/customer.ts
+|
+| and then import them inside `start/routes.ts` as follows
+|
+| import './routes/cart'
+| import './routes/customer'
 |
 */
 
-import router from '@adonisjs/core/services/router';
-import { NextFn } from '@adonisjs/core/types/http';
-import { HttpContext } from '@adonisjs/core/http';
+import Route from '@ioc:Adonis/Core/Route';
 
-import '#routes/book';
-import HealthChecksController from '#controllers/health_checks_controller';
-import env from '#start/env';
-
-router
-  .get('/health', [HealthChecksController])
-  .use(({ request, response }: HttpContext, next: NextFn) => {
-    if (request.header('x-monitoring-secret') === env.get('HEALTH_CHECK_API_KEY')) {
-      return next();
-    }
-    response.unauthorized();
-  });
-
-router.get('/', async () => {
-  return {
-    message: 'ok',
-  };
+Route.get('/', async () => {
+  return { hello: 'world' };
 });

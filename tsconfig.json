@@ -1,16 +1,33 @@
 {
-  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "extends": "adonis-preset-ts/tsconfig.json",
+  "include": [
+    "**/*"
+  ],
+  "exclude": ["./inertia/**/*", "node_modules", "build", "logs", ".git", ".data"],
   "compilerOptions": {
+    "outDir": "build",
     "rootDir": "./",
-    "outDir": "./build",
-    "target": "ES2019",
+    "baseUrl": "./",
+    "paths": {
+      "App/*": [
+        "./app/*"
+      ],
+      "Config/*": [
+        "./config/*"
+      ],
+      "Contracts/*": [
+        "./contracts/*"
+      ],
+      "Database/*": [
+        "./database/*"
+      ]
+    },
     "lib": [
       "ES2019",
       "ES2020.BigInt",
       "ES2020.Promise",
       "ES2020.String",
       "ES2020.Symbol.WellKnown",
-      "DOM",
     ],
     "declaration": false,
     "noImplicitAny": true,
@@ -32,39 +49,6 @@
       "@adonisjs/core",
       "@adonisjs/repl",
       "@adonisjs/lucid",
-      // "@adonisjs/redis",
-      "@adonisjs/auth",
-      // "@adonisjs/limiter",
-      // "@adonisjs/mail",
-      // "@adonisjs/bouncer"
     ],
-    "paths": {
-      "#controllers/*": ["./app/controllers/*"],
-      "#exceptions/*": ["./app/exceptions/*"],
-      "#models/*": ["./app/models/*"],
-      "#mails/*": ["./app/mails/*"],
-      "#services/*": ["./app/services/*"],
-      "#listeners/*": ["./app/listeners/*"],
-      "#libraries/*": ["./app/libraries/*"],
-      "#events/*": ["./app/events/*"],
-      "#middleware/*": ["./app/middleware/*"],
-      "#validators/*": ["./app/validators/*"],
-      "#providers/*": ["./providers/*"],
-      "#policies/*": ["./app/policies/*"],
-      "#utils/*": ["./app/utils/*"],
-      "#abilities/*": ["./app/abilities/*"],
-      "#database/*": ["./database/*"],
-      "#tests/*": ["./tests/*"],
-      "#start/*": ["./start/*"],
-      "#config/*": ["./config/*"],
-      "#commands/*": ["./commands/*"],
-      "#routes/*": ["./start/routes/*"],
-      "#views/*": ["./database/views/*"],
-      "#types/*": ["./contracts/types/*"],
-      "#enums/*": ["./contracts/enums/*"],
-      "#decorators/*": ["./app/decorators/*"],
-      "#crons/*": ["./app/crons/*"]
-    },
-  },
-  "exclude": ["./inertia/**/*", "node_modules", "build", "logs", ".git", ".data"]
+  }
 }

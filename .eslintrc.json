@@ -25,10 +25,8 @@
     "@typescript-eslint/default-param-last": "warn",
     "deprecation/deprecation": "warn",
     "import/newline-after-import": "error",
-    "import/no-unresolved": "error",
+    // "import/no-unresolved": "error",
     "no-duplicate-imports": "error"
-    // "@adonisjs/prefer-lazy-controller-import": "error",
-    // "@adonisjs/prefer-lazy-listener-import": "error"
   },
   "settings": {
     "import/parsers": {
