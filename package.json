@@ -3,46 +3,17 @@
   "version": "3.0.0",
   "description": "Library API for managing books",
   "license": "ISC",
-  "type": "module",
-  "imports": {
-    "#controllers/*": "./app/controllers/*.js",
-    "#exceptions/*": "./app/exceptions/*.js",
-    "#models/*": "./app/models/*.js",
-    "#mails/*": "./app/mails/*.js",
-    "#services/*": "./app/services/*.js",
-    "#listeners/*": "./app/listeners/*.js",
-    "#events/*": "./app/events/*.js",
-    "#middleware/*": "./app/middleware/*.js",
-    "#validators/*": "./app/validators/*.js",
-    "#providers/*": "./providers/*.js",
-    "#policies/*": "./app/policies/*.js",
-    "#abilities/*": "./app/abilities/*.js",
-    "#database/*": "./database/*",
-    "#tests/*": "./tests/*.js",
-    "#start/*": "./start/*.js",
-    "#config/*": "./config/*.js",
-    "#commands/*": "./commands/*.js",
-    "#utils/*": "./app/utils/*.js",
-    "#libraries/*": "./app/libraries/*.js",
-    "#enums/*": "./contracts/enums/*.js",
-    "#types/*": "./contracts/types/*.js",
-    "#decorators/*": "./app/decorators/*.js",
-    "#request_validators/*": "./app/validators/request_validators/*.js",
-    "#routes/*": "./start/routes/*.js",
-    "#views/*": "./database/views/*.js",
-    "#crons/*": "./app/crons/*.js"
-  },
   "scripts": {
-    "dev": "node ace serve --watch",
     "build": "node ace build --production",
-    "start": "node server.js",
-    "test": "node ace test",
-    "lint": "eslint . --ext=.ts",
-    "format": "prettier --write .",
     "commit": "git-cz",
+    "dev": "node ace serve --watch",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext=.ts",
     "prepare": "node .husky/install.mjs",
     "release": "standard-version",
     "release:mock": "npm run release -- --dry-run",
+    "start": "node server.js",
+    "test": "node ace test",
     "typecheck": "tsc --noEmit"
   },
   "config": {
@@ -50,13 +21,15 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "prettier": ".prettierrc.json",
+  "prettier": ".prettierrc.mjs",
   "eslintConfig": {
     "plugins": [
       "prettier"
     ],
     "extends": [
-      "prettier"
+      "prettier",
+      "@adonisjs/eslint-config/app",
+      "plugin:adonis/typescriptApp"
     ],
     "rules": {
       "prettier/prettier": [
@@ -110,12 +83,10 @@
     "eslint-plugin-prettier": "^5.2.1",
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
-    "js-yaml": "^4.1.0",
-    "nodemon": "^3.1.9",
+    "pino-pretty": "^13.0.0",
     "prettier": "^3.4.2",
-    "prettier-eslint": "^16.3.0",
     "sort-package-json": "^2.12.0",
-    "typescript": "4.8",
+    "typescript": "^5.7.2",
     "youch": "^3.3.4",
     "youch-terminal": "^2.2.3"
   }

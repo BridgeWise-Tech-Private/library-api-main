@@ -9,5 +9,6 @@ import type { InferListFromConfig } from '@adonisjs/core/build/config';
 import type hashConfig from '../config/hash';
 
 declare module '@ioc:Adonis/Core/Hash' {
-  type HashersList = InferListFromConfig<typeof hashConfig>;
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface HashersList extends InferListFromConfig<typeof hashConfig> { }
 }
