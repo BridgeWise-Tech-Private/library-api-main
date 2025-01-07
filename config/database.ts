@@ -14,7 +14,8 @@ const dbConfig = defineConfig({
         password: env.get('DB_PASSWORD'),
         database: env.get('DB_DATABASE'),
         // ssl: Utils.isProduction(),
-        ssl: { rejectUnauthorized: false }
+        // ssl: { rejectUnauthorized: false }
+        ssl: true
       },
       migrations: {
         naturalSort: true,
