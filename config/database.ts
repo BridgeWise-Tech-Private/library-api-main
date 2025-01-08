@@ -42,7 +42,7 @@ const databaseConfig: DatabaseConfig = {
         user: Env.get('DB_USER'),
         password: Env.get('DB_PASSWORD', ''),
         database: Env.get('DB_DATABASE', ''),
-        ssl: Utils.isProduction() || { rejectUnauthorized: false },
+        ssl: { rejectUnauthorized: false },
       },
       migrations: {
         naturalSort: true,
