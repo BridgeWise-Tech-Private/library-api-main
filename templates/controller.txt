@@ -1,0 +1,8 @@
+import BaseController from './BaseController';
+import {{ model }}Service from 'App/Services/{{ model }}Service';
+
+export default class {{ model }}Controller extends BaseController<typeof {{ model }}Service, typeof {{ model }}Service.repository.model> {
+  constructor() {
+    super({{ model }}Service);
+  }
+}

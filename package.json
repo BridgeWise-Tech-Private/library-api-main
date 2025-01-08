@@ -12,8 +12,9 @@
     "prepare": "node .husky/install.mjs",
     "release": "standard-version",
     "release:mock": "npm run release -- --dry-run",
+    "prestart": "node ace generate:manifest",
     "start": "node server.js",
-    "test": "node ace test",
+    "test": "node -r @adonisjs/assembler/build/register japaFile.ts",
     "typecheck": "tsc --noEmit"
   },
   "config": {
@@ -44,6 +45,7 @@
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/lucid": "^18.4.0",
     "@adonisjs/repl": "^3.1.11",
+    "axios": "^1.7.9",
     "bad-words": "^4.0.0",
     "cron": "^3.3.2",
     "lodash": "^4.17.21",
@@ -83,6 +85,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
+    "japa": "^4.0.0",
     "pino-pretty": "^13.0.0",
     "prettier": "^3.4.2",
     "sort-package-json": "^2.12.0",

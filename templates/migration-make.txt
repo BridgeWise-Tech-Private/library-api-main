@@ -1,0 +1,15 @@
+import BaseSchema from '@ioc:Adonis/Lucid/Schema';
+import {{ model }} from 'App/Models/{{ model }}';
+
+export default class Create{{ model }} extends BaseSchema {
+  public async up(): Promise<void> {
+    this.schema.createTable({{ model }}.table, (table) => {
+      table.bigInteger({{ model }}.columnName('id')).primary();
+      table.timestamps(true);
+    });
+  }
+
+  public async down(): Promise<void> {
+    this.schema.dropTable({{ model }}.table);
+  }
+}

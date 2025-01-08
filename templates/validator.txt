@@ -1,0 +1,15 @@
+import { schema, rules } from '@ioc:Adonis/Core/Validator';
+import {{ model }} from 'App/Models/{{ model }}';
+import Utils from 'App/Utils/Utils';
+
+export default class {{ model }}{{ action }}Validator {
+  constructor(public data: Record<string, unknown>) {}
+
+  public schema = schema.create({
+  });
+
+  public cacheKey = Utils.hash([__dirname, this.constructor.name].join('/'));
+
+  public messages = {
+  };
+}

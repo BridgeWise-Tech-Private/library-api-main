@@ -1,0 +1,14 @@
+import BaseSchema from '@ioc:Adonis/Lucid/Schema';
+import {{ model }} from 'App/Models/{{ model }}';
+
+export default class Alter{{ model }} extends BaseSchema {
+  public async up(): Promise<void> {
+    this.schema.alterTable({{ model }}.table, (table) => {
+    });
+  }
+
+  public async down(): Promise<void> {
+    this.schema.alterTable({{ model }}.table, (table) => {
+    });
+  }
+}

@@ -1,9 +1,11 @@
 import Env from '@ioc:Adonis/Core/Env';
 import { DateTime } from 'luxon';
 import _ from 'lodash';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { Filter } from './Profanity.mjs';
 import { customAlphabet } from 'nanoid';
 import dictionary from 'nanoid-dictionary';
-import { Filter } from 'bad-words';
 import BaseEnhancedModel from 'App/Models/BaseEnhancedModel';
 
 /** bad-words filters for these words automatically:

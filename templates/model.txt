@@ -1,0 +1,6 @@
+import { column } from '@ioc:Adonis/Lucid/Orm';
+import BaseNumberIdModel from './BaseNumberIdModel';
+
+export default class {{ filename }} extends BaseNumberIdModel {
+  public static table = '{{#toTableName}}{{ filename }}{{/toTableName}}';
+}

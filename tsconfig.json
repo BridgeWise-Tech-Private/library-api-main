@@ -1,10 +1,13 @@
 {
   "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "./app/Utils/Profanity.mts",
+    "./app/Utils/Profanity.mjs"
   ],
-  "exclude": ["./inertia/**/*", "node_modules", "build", "logs", ".git", ".data"],
+  "exclude": ["node_modules", "build", "logs", ".git", ".data"],
   "compilerOptions": {
+    "target": "ESNext",
     "outDir": "build",
     "rootDir": "./",
     "baseUrl": "./",

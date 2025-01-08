@@ -1,0 +1,12 @@
+import BaseRepository from './BaseRepository';
+import {{ model }} from 'App/Models/{{ model }}';
+import {{ model }}CreateValidator from 'App/Validators/Models/{{ model }}CreateValidator';
+import {{ model }}UpdateValidator from 'App/Validators/Models/{{ model }}UpdateValidator';
+
+class {{ model }}Repository extends BaseRepository<typeof {{ model }}, typeof {{ model }}.prototype.id> {
+  constructor() {
+    super({{ model }}, {{ model }}CreateValidator, {{ model }}UpdateValidator);
+  }
+}
+
+export default new {{ model }}Repository();

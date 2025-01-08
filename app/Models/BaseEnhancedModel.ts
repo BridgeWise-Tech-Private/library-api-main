@@ -1,6 +1,7 @@
+import path from 'path';
+
 import { DateTime } from 'luxon';
 import _ from 'lodash';
-
 import {
     BaseModel,
     beforeCreate,
@@ -8,6 +9,7 @@ import {
     ModelAttributes
 } from '@ioc:Adonis/Lucid/Orm';
 import { validator } from '@ioc:Adonis/Core/Validator';
+import Application from '@ioc:Adonis/Core/Application';
 
 import Utils from 'App/Utils/Utils';
 import { CountType } from 'Contracts/types/Core';
@@ -143,7 +145,7 @@ export default class BaseEnhancedModel extends BaseModel {
     }
 
     private static getValidatorPath(type: ModelValidationType): string {
-        return `#validators/${_.snakeCase(this.name).toLowerCase()}_${type.toLowerCase()}_validator`;
+        return path.join(Application.appRoot, `app/Validators/Models/${this.name}${type}Validator`);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -162,6 +164,8 @@ export default class BaseEnhancedModel extends BaseModel {
         this: M,
         values: Partial<MA>,
     ): Promise<Partial<MA>> {
+        values = Utils.filterObjStringsForProfanity(values);
+
         const validatorClass = await this.getValidator('Create');
         if (validatorClass) {
             return validator.validate(new validatorClass(values)) as Promise<Partial<MA>>;
@@ -173,6 +177,8 @@ export default class BaseEnhancedModel extends BaseModel {
         this: M,
         values: Partial<MA>,
     ): Promise<Partial<MA>> {
+        values = Utils.filterObjStringsForProfanity(values);
+
         const validatorClass = await this.getValidator('Update');
         if (validatorClass) {
             return validator.validate(new validatorClass(values)) as Promise<Partial<MA>>;

@@ -1,0 +1,10 @@
+import BaseService from './BaseService';
+import {{ model }}Repository from 'App/Repositories/{{ model }}Repository';
+
+class {{ model }}Service extends BaseService<
+  typeof {{ model }}Repository,
+  typeof {{ model }}Repository.model,
+  typeof {{ model }}Repository.model.prototype.id
+> {}
+
+export default new {{ model }}Service({{ model }}Repository);
