@@ -23,6 +23,9 @@
       ],
       "Database/*": [
         "./database/*"
+      ],
+      "Routes/*": [
+        "./start/routes/*"
       ]
     },
     "lib": [

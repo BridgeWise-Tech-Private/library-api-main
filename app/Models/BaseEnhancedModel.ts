@@ -1,12 +1,12 @@
 import path from 'path';
 
 import { DateTime } from 'luxon';
-import _ from 'lodash';
+import { mapKeys } from 'lodash';
 import {
     BaseModel,
     beforeCreate,
     column,
-    ModelAttributes
+    ModelAttributes,
 } from '@ioc:Adonis/Lucid/Orm';
 import { validator } from '@ioc:Adonis/Core/Validator';
 import Application from '@ioc:Adonis/Core/Application';
@@ -41,6 +41,8 @@ export default class BaseEnhancedModel extends BaseModel {
 
     @beforeCreate()
     public static async generateId(model: BaseEnhancedModel): Promise<void> {
+        model = Utils.filterObjStringsForProfanity(model);
+
         if (model.disableIdGeneration) {
             return;
         }
@@ -49,12 +51,10 @@ export default class BaseEnhancedModel extends BaseModel {
 
     public static async mapColumns(
         data: Record<string, unknown>,
-        model: BaseEnhancedModel
+        model: BaseEnhancedModel,
     ): Promise<Record<string, unknown>> {
-        const ModelClass = (
-            await import(`#models/${_.snakeCase(model.constructor.name).toLowerCase()}`)
-        ).default;
-        return _.mapKeys(data, (_value, key) => {
+        const ModelClass = (await import(`./${model.constructor.name}`)).default;
+        return mapKeys(data, (_value, key) => {
             return ModelClass.$getColumn(key).columnName;
         });
     }
@@ -149,7 +149,7 @@ export default class BaseEnhancedModel extends BaseModel {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private static async getValidator(type: ModelValidationType): Promise<any> {
+    protected static async getValidator(type: ModelValidationType): Promise<any> {
         try {
             const { default: validator } = await import(this.getValidatorPath(type));
             return validator;
@@ -162,9 +162,10 @@ export default class BaseEnhancedModel extends BaseModel {
 
     public static async validateForCreate<M extends BaseEnhancedModelType, MA extends ModelAttributes<InstanceType<M>>>(
         this: M,
-        values: Partial<MA>,
+        values: Partial<MA> & { id?: string | number },
     ): Promise<Partial<MA>> {
         values = Utils.filterObjStringsForProfanity(values);
+        values.id = values.id !== undefined ? values.id : Utils.uniqueId();
 
         const validatorClass = await this.getValidator('Create');
         if (validatorClass) {
@@ -184,6 +185,14 @@ export default class BaseEnhancedModel extends BaseModel {
             return validator.validate(new validatorClass(values)) as Promise<Partial<MA>>;
         }
         return values;
+    }
+
+    public static async validateCreate<M extends BaseEnhancedModelType, MA extends ModelAttributes<InstanceType<M>>>(
+        this: M,
+        values: Partial<MA>,
+    ): Promise<InstanceType<M>> {
+        values = await this.validateForCreate(values);
+        return this.create(values);
     }
 
     public static async validateUpdate<

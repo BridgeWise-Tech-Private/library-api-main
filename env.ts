@@ -19,7 +19,6 @@ export default Env.rules({
   PORT: Env.schema.number(),
   APP_KEY: Env.schema.string(),
   APP_NAME: Env.schema.string(),
-  DRIVE_DISK: Env.schema.enum(['local'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
 
   DB_CONNECTION: Env.schema.enum(['pg'] as const),
@@ -28,4 +27,7 @@ export default Env.rules({
   DB_USER: Env.schema.string(),
   DB_PASSWORD: Env.schema.string.optional(),
   DB_DATABASE: Env.schema.string(),
+
+  CLIENT_API_KEY: Env.schema.string(),
+  HEALTH_CHECK_API_KEY: Env.schema.string(),
 });

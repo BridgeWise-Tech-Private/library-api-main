@@ -11,11 +11,14 @@
     "App": "app",
     "Config": "config",
     "Database": "database",
-    "Contracts": "contracts"
+    "Contracts": "contracts",
+    "Routes": "routes"
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel"
+    "./start/kernel",
+    "./start/NamingStrategy",
+    "./start/validationRules"
   ],
   "providers": [
     "./providers/AppProvider",
