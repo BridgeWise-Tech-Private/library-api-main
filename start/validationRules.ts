@@ -26,7 +26,7 @@ validator.rule('yearCheckRule', (value, [options], { pointer, arrayExpressionPoi
 });
 
 validator.rule('nameWithSpecialChar', (value, _, { pointer, arrayExpressionPointer, errorReporter }) => {
-  const regex = /^[A-Za-z-& \- _]+$/;
+  const regex = /^[^\t\r\n]+$/;
   const name = regex.test(value);
 
   if (!name) {

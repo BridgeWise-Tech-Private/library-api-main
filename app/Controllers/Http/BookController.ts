@@ -1,4 +1,5 @@
 import { HttpContext } from '@adonisjs/core/build/standalone';
+
 import RequestValidator from 'App/Decorators/RequestValidator';
 import Book from 'App/Models/Book';
 import BookCreateRequestValidator from 'App/Validators/Requests/BookCreateRequestValidator';
@@ -20,8 +21,26 @@ export default class BookController {
 
                 return response.status(200).json(book);
             }
+            else if (
+                !Object.keys(body).some(key =>
+                    ['title', 'author', 'genre', 'yearPublished', 'isPermanentCollection', 'checkedOut']
+                        .includes(key)
+                )) {
+                const [permanentData, clientData] = await Promise.all([
+                    Book.query()
+                        .where(Book.columnName('isPermanentCollection'), '=', true)
+                        .orderBy(Book.columnName('updatedAt'), 'asc'),
+                    Book.query()
+                        .orderBy(Book.columnName('updatedAt'), 'desc')
+                        .limit(3000)
+                ]);
+
+                return response.status(200).json(permanentData.concat(clientData));
+            }
 
             const books = await Book.query()
+                .orderBy(Book.columnName('updatedAt'), 'desc')
+                .limit(5000)
                 .if(body.title, (query) => {
                     query.whereILike(Book.queryColumn('title'), `%${body.title}%`);
                 })
