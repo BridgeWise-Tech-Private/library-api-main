@@ -31,6 +31,7 @@ export default class BookController {
                         .where(Book.columnName('isPermanentCollection'), '=', true)
                         .orderBy(Book.columnName('updatedAt'), 'asc'),
                     Book.query()
+                        .where(Book.columnName('isPermanentCollection'), '=', false)
                         .orderBy(Book.columnName('updatedAt'), 'asc')
                         .limit(3000)
                 ]);
