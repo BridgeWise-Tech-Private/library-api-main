@@ -31,7 +31,7 @@ export default class BookController {
                         .where(Book.columnName('isPermanentCollection'), '=', true)
                         .orderBy(Book.columnName('updatedAt'), 'asc'),
                     Book.query()
-                        .orderBy(Book.columnName('updatedAt'), 'desc')
+                        .orderBy(Book.columnName('updatedAt'), 'asc')
                         .limit(3000)
                 ]);
 
@@ -39,7 +39,7 @@ export default class BookController {
             }
 
             const books = await Book.query()
-                .orderBy(Book.columnName('updatedAt'), 'desc')
+                .orderBy(Book.columnName('updatedAt'), 'asc')
                 .limit(5000)
                 .if(body.title, (query) => {
                     query.whereILike(Book.queryColumn('title'), `%${body.title}%`);
