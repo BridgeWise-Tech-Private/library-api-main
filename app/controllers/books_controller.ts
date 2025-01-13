@@ -12,8 +12,22 @@ export default class BooksController {
         try {
             const { id, ...body } = { ...request.all(), ...request.params() };
 
+            const bookSelectQuery = Book
+                .query()
+                .select([
+                    Book.queryColumn('id'),
+                    Book.queryColumn('title'),
+                    Book.queryColumn('author'),
+                    Book.queryColumn('genre'),
+                    Book.queryColumn('yearPublished'),
+                    Book.queryColumn('checkedOut'),
+                    Book.queryColumn('isPermanentCollection'),
+                    Book.queryColumn('createdAt')
+                ]);
+
             if (id) {
-                const book = await Book.find(id);
+                const book = await bookSelectQuery
+                    .where({ id });
 
                 if (!book) {
                     return response.status(404).json({ message: `Book with id '${id}' not found` });
@@ -29,9 +43,29 @@ export default class BooksController {
                 const [permanentData, clientData] = await Promise.all([
                     Book.query()
                         .where(Book.columnName('isPermanentCollection'), '=', true)
+                        .select([
+                            Book.queryColumn('id'),
+                            Book.queryColumn('title'),
+                            Book.queryColumn('author'),
+                            Book.queryColumn('genre'),
+                            Book.queryColumn('yearPublished'),
+                            Book.queryColumn('checkedOut'),
+                            Book.queryColumn('isPermanentCollection'),
+                            Book.queryColumn('createdAt')
+                        ])
                         .orderBy(Book.columnName('updatedAt'), 'asc'),
                     Book.query()
                         .where(Book.columnName('isPermanentCollection'), '=', false)
+                        .select([
+                            Book.queryColumn('id'),
+                            Book.queryColumn('title'),
+                            Book.queryColumn('author'),
+                            Book.queryColumn('genre'),
+                            Book.queryColumn('yearPublished'),
+                            Book.queryColumn('checkedOut'),
+                            Book.queryColumn('isPermanentCollection'),
+                            Book.queryColumn('createdAt')
+                        ])
                         .orderBy(Book.columnName('updatedAt'), 'asc')
                         .limit(3000)
                 ]);
@@ -39,7 +73,7 @@ export default class BooksController {
                 return response.status(200).json(permanentData.concat(clientData));
             }
 
-            const books = await Book.query()
+            const books = await bookSelectQuery
                 .orderBy(Book.columnName('updatedAt'), 'asc')
                 .limit(5000)
                 .if(body.title, (query) => {
