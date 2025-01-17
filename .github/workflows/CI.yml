@@ -30,7 +30,7 @@ jobs:
           echo "PORT=3333" >> $GITHUB_ENV
           echo "HOST=0.0.0.0" >> $GITHUB_ENV
           echo "LOG_LEVEL=trace" >> $GITHUB_ENV
-          echo "APP_KEY=test1234" >> $GITHUB_ENV
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> $GITHUB_ENV
           echo "NODE_ENV=test" >> $GITHUB_ENV
           echo "DB_CONNECTION=pg" >> $GITHUB_ENV
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
