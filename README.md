@@ -1,91 +1,83 @@
-# Postman Library API v2
+# Library API v3
 
-## Development
+## Overview
 
-### Prereqs
+Library API v3 is a RESTful API designed for managing a collection of books. It provides endpoints for creating, retrieving, updating, and deleting books in the library. The API is built using Node.js, Fastify, and TypeScript, and it leverages PostgreSQL for data storage.
 
-You will need to have [Postgres](https://www.postgresql.org/) installed to run test and development databases.
+## Table of Contents
 
-Once Postgres is install, you should have access to the `psql` command.
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Application](#running-the-application)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Debugging](#debugging)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Initialize database
+## Prerequisites
 
-Run
+Before you begin, ensure you have met the following requirements:
 
-`npm run db:init`
+- Node.js (version 14 or higher)
+- npm (version 6 or higher)
+- PostgreSQL (version 12 or higher)
 
-`npm run db:dev:pristine`
+## Installation
 
-This will create `library_api_test` and `library_api_dev` databases with a user named
-`librarian`, then migrate & seed them with initial books.
+1. Clone the repository:
 
-#### Run migrations
+   ```bash
+   git clone https://github.com/yourusername/library-api-v3.git
+   cd library-api-v3
+2. Install the dependencies:
 
-When you initialized the database you ran `npm run db:dev:pristine`, which ran the latest migration.
+    ```bash
+    npm install
+3. Initialize the database:
+    ```bash
+    npm run db:init
+    npm run db:dev:pristine
+## Configuration
+1. Copy the example environment variables file to .env:
+    ```bash
+    cp .env.example .env
+2. Update the .env file with your database credentials and any other necessary configuration.
 
-If you need to update migrations later:
+## Running your application
+To start the development server, run:
+```bash 
+npm run dev
+```
+The API will be available at http://localhost:4000 by default.
 
-`npm run db:dev:latest`
+## API Endpoints
+### Health Check
+> GET /Returns a simple health check message.
 
-#### Inspecting database
+### Books
+> GET /booksRetrieve a list of all books. Supports filtering by genre, checked out status, and search terms. 
 
-If you want to poke around the dev database or run SQL commands on it directly, run `npm run psql` in your terminal. This will enter you in the postgres CLI as the default superuser on your machine (hopefully).
+> POST /booksAdd a new book to the library. Requires an API key for authentication.
 
-You can run SQL queries in the `psql` REPL
+> GET /books/{id}Retrieve a specific book by its ID.
 
-Ex:
+> PATCH /books/{id}Update a book's details by its ID. Requires an API key for authentication.
 
-```sql
-SELECT * from "books";
+> DELETE /books/{id} Delete a book by its ID.
+ Requires an API key for authentication.
+ 
+## Testing
+To run the test suite, execute:
+```bash
+    npm test
 ```
 
-_Notes_
-
-- SQL keywords are case-insensitive. (`SELECT` = `select`)
-
-- table and column names should come in **double quotes** `""`. You don't actually need quotes if the table/column name is a single lowercase word, but just do it for good practice.
-
-- strings must by marked with **single quotes** `''`. Ex:
-
-```sql
-SELECT * FROM "books" WHERE "author" = 'borges';
+For continuous testing during development, use:
+```bash
+npm test:watch
 ```
 
-### Install and develop
-
-First copy the env vars to your local:
-
-`cp .env.example .env`
-
-You can use the default API Key key and value or modify it.
-
-`npm install`
-
-Start api dev server
-
-`npm run dev`
-
-The API runs on `localhost:4000` by default unless other `PORT` is specified in the environment.
-
-### Testing services
-
-Tests will be ignored in the build, so you can put them anywhere with extension `.test.ts`.
-
-Run `npm test` to start test runner. Note that the test database is destoryed and re-migrated and seeded each run of `npm test`.
-
-Run `npm test:watch` to run tests and continually test as code is updated.
-
-#### Testing API in Postman
-
-Import the `Test_Runner_Story.postman_collection.json` file into Postman and run the collection to carry out BDD tests.
-
-### Debugging in vscode
-
-Open the debugger tab, select `launch dev server` and the task, and press the "play" button.
-
-This will launch the dev server in vscode and allow you to add breakpoints for debugging.
-
-## TODO
-
-Add the following to CI.yml when `JEST` is fixed
- -- --detectOpenHandles --forceExit
+## Debugging
+To debug the application in Visual Studio Code:Open the debugger tab.Select launch dev server as the task.Press the "play" button to start debugging.
