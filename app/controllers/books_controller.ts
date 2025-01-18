@@ -110,6 +110,9 @@ export default class BooksController {
 
             const createdBook = await Book.validateCreate(body);
 
+            // This step is needed to get all the fields that are not sent in the request body
+            await createdBook.refresh();
+
             response.created(createdBook);
         } catch (err) {
             console.log(JSON.stringify(err));

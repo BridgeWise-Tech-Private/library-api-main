@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.boolean(Book.columnName('isPermanentCollection')).notNullable().defaultTo(false).index();
 
       table.dateTime(Book.columnName('createdAt')).index();
-      table.dateTime(Book.columnName('updatedAt')).index();
+      table.dateTime(Book.columnName('updatedAt'));
     });
   }
 
