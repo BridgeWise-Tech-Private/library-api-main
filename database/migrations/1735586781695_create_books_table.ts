@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string(Book.columnName('genre'), 20).notNullable().index();
       table.text(Book.columnName('title')).notNullable().index();
       table.integer(Book.columnName('yearPublished')).notNullable().index();
+
       table.boolean(Book.columnName('checkedOut')).notNullable().defaultTo(false).index();
       table.boolean(Book.columnName('isPermanentCollection')).notNullable().defaultTo(false).index();
 
