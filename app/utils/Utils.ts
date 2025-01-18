@@ -27,7 +27,7 @@ export default class Utils {
 
     public static ALPHABETS_WITH_OPTIONAL_SPACE_IN_BETWEEN = /^[a-zA-Z]+ ?[a-zA-Z]*$/;
 
-    public static ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_IN_BETWEEN = /^[a-zA-Z0-9\-]*$/;
+    public static ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_UNDERSCORE_IN_BETWEEN = /^[a-zA-Z0-9\-_]*$/;
 
     public static SPECIAL_CHARACTERS = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s]/;
 
