@@ -79,8 +79,8 @@ class BookService {
             }
 
             const books = await bookSelectQuery
-                .orderBy(Book.columnName('updatedAt'), 'asc')
-                .limit(5000)
+                .orderBy(Book.columnName('updatedAt'), 'desc')
+                .limit(3000)
                 .if(body.title, (query) => {
                     query.whereILike(Book.queryColumn('title'), `%${body.title}%`);
                 })
@@ -173,6 +173,8 @@ class BookService {
                 };
             }
 
+            // This step is needed to get all the fields that are not sent in the request body
+            // Ideally we would use Book.validateUpdate(body)
             const bookData = Object.assign(await Book.validateForUpdate(body), { updatedAt: DateTime.now() });
 
             const [updatedBook] = await Book.query().update(bookData).returning([
