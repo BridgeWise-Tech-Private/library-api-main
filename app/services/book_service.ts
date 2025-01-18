@@ -139,7 +139,7 @@ class BookService {
 
             return {
                 status: 201,
-                data: createdBook
+                data: Utils.toCamelCase(createdBook)
             };
         } catch (err) {
             console.log(JSON.stringify(err));
@@ -186,7 +186,7 @@ class BookService {
 
             return {
                 status: 200,
-                data: book as Book,
+                data: Utils.toCamelCase(book as unknown as Record<string, unknown>),
             };
         } catch (err) {
             console.log(JSON.stringify(err));
@@ -222,7 +222,7 @@ class BookService {
 
             return {
                 status: 204,
-                data: { book },
+                data: { message: `Book with id "${id}" is deleted successfully.` },
             };
         } catch (err) {
             console.log(JSON.stringify(err));
