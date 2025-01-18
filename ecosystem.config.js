@@ -2,7 +2,7 @@
 module.exports = {
   apps: [
     {
-      name: 'library-api-v2',
+      name: 'library-api-v3',
       script: 'npm',
       automation: false,
       args: 'run start',

@@ -1,8 +1,11 @@
 {
-  "name": "library-api-v2",
-  "version": "2.0.0",
+  "name": "library-api-v3",
+  "version": "3.0.0",
   "description": "Library API for managing books",
   "license": "ISC",
+  "author": {
+    "name": "BridgeWise tech"
+  },
   "type": "module",
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -87,7 +90,8 @@
     "nanoid-dictionary": "^4.3.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.8.2",

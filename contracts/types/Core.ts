@@ -21,3 +21,8 @@ export type DeviceInfoType = {
 export type SuccessResponseBaseType = {
     success: boolean;
 };
+
+export type ServiceResponseType = {
+    status: number;
+    data: object | object[] | string
+};

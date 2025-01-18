@@ -5,6 +5,7 @@ import { customAlphabet } from 'nanoid';
 import dictionary from 'nanoid-dictionary';
 import { Filter } from 'bad-words';
 import BaseEnhancedModel from '#models/BaseEnhancedModel';
+import { v4 as uuidV4 } from 'uuid';
 
 /** bad-words filters for these words automatically:
  ** https://github.com/web-mech/badwords/blob/master/lib/lang.json
@@ -42,6 +43,10 @@ export default class Utils {
         );
 
         return stringNanoid();
+    }
+
+    public static generateUuid(): string {
+        return uuidV4();
     }
 
     public static random(min: number, max: number): number {
