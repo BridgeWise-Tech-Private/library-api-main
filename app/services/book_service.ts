@@ -171,7 +171,18 @@ class BookService {
                 };
             }
 
-            book = await Book.validateUpdate(id, body);
+            const bookData = Object.assign(await Book.validateForUpdate(body), { updatedAt: DateTime.now() });
+
+            book = await Book.query().update(bookData).returning([
+                Book.queryColumn('id'),
+                Book.queryColumn('title'),
+                Book.queryColumn('author'),
+                Book.queryColumn('genre'),
+                Book.queryColumn('yearPublished'),
+                Book.queryColumn('checkedOut'),
+                Book.queryColumn('isPermanentCollection'),
+                Book.queryColumn('createdAt')
+            ]).first();
 
             return {
                 status: 200,
