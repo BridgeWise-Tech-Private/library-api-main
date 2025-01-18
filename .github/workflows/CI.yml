@@ -26,9 +26,21 @@ jobs:
         
       - name: Set environment variables
         run: |
-          echo "NEON_DB_CONNECTION_STRING=${{ secrets.NEON_DB_CONNECTION_STRING }}" >> $GITHUB_ENV
+          echo "TZ=IST" >> $GITHUB_ENV
+          echo "PORT=3333" >> $GITHUB_ENV
+          echo "HOST=0.0.0.0" >> $GITHUB_ENV
+          echo "LOG_LEVEL=trace" >> $GITHUB_ENV
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> $GITHUB_ENV
           echo "NODE_ENV=test" >> $GITHUB_ENV
-          echo "DEMO_API_KEY_VAL=test1234" >> $GITHUB_ENV
+          echo "DB_CONNECTION=pg" >> $GITHUB_ENV
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> $GITHUB_ENV
+          echo "CLIENT_API_KEY=${{ secrets.CLIENT_API_KEY }}" >> $GITHUB_ENV
+          echo "HEALTH_CHECK_API_KEY=healthTest1234" >> $GITHUB_ENV
+          echo "LOCK_STORE=database" >> $GITHUB_ENV
 
         
       - name: Run tests
