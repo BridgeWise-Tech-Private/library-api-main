@@ -10,7 +10,7 @@ router
         router
             .get('/:id', [BooksController, 'GetBooks'])
             .as('get.id')
-            .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
+            .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_UNDERSCORE_IN_BETWEEN);
 
         router.group(() => {
             router.post('/', [BooksController, 'CreateNewBook']).as('book.create');
@@ -19,7 +19,7 @@ router
                 router.delete('/', [BooksController, 'DeleteBook']).as('book.delete');
             })
                 .prefix('/:id')
-                .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_IN_BETWEEN);
+                .where('id', Utils.ALPHANUMERIC_WITH_OPTIONAL_HYPHEN_UNDERSCORE_IN_BETWEEN);
         })
             .middleware(middleware.apiKeyRequired());
     })
