@@ -10,7 +10,10 @@ export default class ApiKeyRequiredMiddleware {
     const sentApiKey = request.header('api-key');
 
     if (sentApiKey !== env.get('CLIENT_API_KEY')) {
-      return response.unauthorized();
+      return response.unauthorized({
+        "message": `Invalid or missing credentials. 
+        Make sure you add 'api-key' to the request headers with a valid value`
+      });
     }
     return next();
   }
