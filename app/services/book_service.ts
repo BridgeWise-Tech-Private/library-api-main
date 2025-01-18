@@ -137,6 +137,8 @@ class BookService {
                 Book.queryColumn('createdAt')
             ]);
 
+            createdBook.created_at = createdBook.created_at.toISOString();
+
             return {
                 status: 201,
                 data: Utils.toCamelCase(createdBook)
@@ -152,7 +154,7 @@ class BookService {
 
     public async updateBook({ id, body }: { id: number, body: Partial<Book> }): Promise<ServiceResponseType> {
         try {
-            let book = await Book.find(id);
+            const book = await Book.find(id);
 
             if (!book) {
                 return {
@@ -173,7 +175,7 @@ class BookService {
 
             const bookData = Object.assign(await Book.validateForUpdate(body), { updatedAt: DateTime.now() });
 
-            book = await Book.query().update(bookData).returning([
+            const [updatedBook] = await Book.query().update(bookData).returning([
                 Book.queryColumn('id'),
                 Book.queryColumn('title'),
                 Book.queryColumn('author'),
@@ -182,11 +184,14 @@ class BookService {
                 Book.queryColumn('checkedOut'),
                 Book.queryColumn('isPermanentCollection'),
                 Book.queryColumn('createdAt')
-            ]).first();
+            ]);
+
+            updatedBook.created_at = updatedBook.created_at.toISOString();
+
 
             return {
                 status: 200,
-                data: Utils.toCamelCase(book as unknown as Record<string, unknown>),
+                data: Utils.toCamelCase(updatedBook),
             };
         } catch (err) {
             console.log(JSON.stringify(err));
