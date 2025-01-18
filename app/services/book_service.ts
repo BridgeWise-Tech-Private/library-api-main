@@ -22,7 +22,7 @@ class BookService {
 
             if (id) {
                 const book = await bookSelectQuery
-                    .where({ id });
+                    .where({ id }).first();
 
                 if (!book) {
                     return {
