@@ -1,91 +1,154 @@
-# Postman Library API v2
+# Library API
 
-## Development
+## Table of Contents
 
-### Prereqs
+- [Library API](#library-api)
+  - [Table of Contents](#table-of-contents)
+  - [Project Overview](#project-overview)
+  - [Tech Stack](#tech-stack)
+  - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Running with Docker](#running-with-docker)
+  - [API Endpoints](#api-endpoints)
+    - [Health Check](#health-check)
+    - [Books](#books)
+  - [Testing](#testing)
+  - [Error Handling](#error-handling)
+  - [Key Code Components](#key-code-components)
+  - [License](#license)
 
-You will need to have [Postgres](https://www.postgresql.org/) installed to run test and development databases.
+## Project Overview
 
-Once Postgres is install, you should have access to the `psql` command.
+The Library API is a backend service built using AdonisJS, designed to manage a collection of books. It provides endpoints for creating, retrieving, updating, and deleting book records. The API is structured to handle various operations efficiently and includes features like request validation, error handling, and scheduled tasks.
 
-### Initialize database
+## Tech Stack
 
-Run
+- **AdonisJS**: A Node.js framework used for building scalable server-side applications.
+- **TypeScript**: Provides static typing for JavaScript, enhancing code quality and maintainability.
+- **PostgreSQL**: A robust relational database used for storing book data.
+- **Luxon**: A library for handling dates and times.
+- **VineJS**: Used for request validation.
+- **Cron**: For scheduling tasks like deleting old entries.
+- **Docker**: Used for containerizing the application.
 
-`npm run db:init`
+## Prerequisites
 
-`npm run db:dev:pristine`
+Before you begin, ensure you have met the following requirements:
 
-This will create `library_api_test` and `library_api_dev` databases with a user named
-`librarian`, then migrate & seed them with initial books.
+- Node.js (version 22 or higher)
+- npm (version 11 or higher)
+- PostgreSQL (version 16 or higher)
 
-#### Run migrations
+### Installation
 
-When you initialized the database you ran `npm run db:dev:pristine`, which ran the latest migration.
+1. **Clone the Repository**
 
-If you need to update migrations later:
+   ```bash
+   git clone https://github.com/{yourusername}/library-api.git
+   cd library-api
+   ```
 
-`npm run db:dev:latest`
+2. **Install Dependencies**
 
-#### Inspecting database
+   ```bash
+   npm install
+   ```
 
-If you want to poke around the dev database or run SQL commands on it directly, run `npm run psql` in your terminal. This will enter you in the postgres CLI as the default superuser on your machine (hopefully).
+3. **Configure Environment Variables:** Copy the example environment file and update it with your configuration.
 
-You can run SQL queries in the `psql` REPL
+   ```bash
+   cp .env.example .env
+   ```
 
-Ex:
+   Ensure you set the correct values for database connection, API keys, and other configurations.
 
-```sql
-SELECT * from "books";
-```
+4. **Database Setup:** Initialize the database and run migrations
 
-_Notes_
+   ```bash
+   node ace migration:fresh
+   node ace db:seed -f ./database/seeders/book_seeder.ts
+   ```
 
-- SQL keywords are case-insensitive. (`SELECT` = `select`)
+5. **Run the Application:** Start the development server
 
-- table and column names should come in **double quotes** `""`. You don't actually need quotes if the table/column name is a single lowercase word, but just do it for good practice.
+   ```bash
+    npm run dev
+   ```
 
-- strings must by marked with **single quotes** `''`. Ex:
+   The API will be available at <http://localhost:3333> by default or else at <http://localhost:{PORT}> PORT declared in env variable.
 
-```sql
-SELECT * FROM "books" WHERE "author" = 'borges';
-```
+## Running with Docker
 
-### Install and develop
+To run the application using Docker, ensure Docker is installed and running on your machine. Then, execute:
 
-First copy the env vars to your local:
+   ```bash
+   docker-compose up
+   ```
 
-`cp .env.example .env`
+## API Endpoints
 
-You can use the default API Key key and value or modify it.
+### Health Check
 
-`npm install`
+> GET /health
+>
+>`x-monitoring-secret` key with value same as value of `HEALTH_CHECK_API_KEY` env variable is required in headers
 
-Start api dev server
+Returns a simple health check message.
 
-`npm run dev`
+### Books
 
-The API runs on `localhost:4000` by default unless other `PORT` is specified in the environment.
+> GET /**books**
 
-### Testing services
+Retrieve a list of all books. Supports filtering by genre, checked out status, and search terms.
 
-Tests will be ignored in the build, so you can put them anywhere with extension `.test.ts`.
+> POST /books
 
-Run `npm test` to start test runner. Note that the test database is destoryed and re-migrated and seeded each run of `npm test`.
+Add a new book to the library. Requires an API key for authentication.
 
-Run `npm test:watch` to run tests and continually test as code is updated.
+> GET /books/{id}
 
-#### Testing API in Postman
+Retrieve a specific book by its ID.
 
-Import the `Test_Runner_Story.postman_collection.json` file into Postman and run the collection to carry out BDD tests.
+> PATCH /books/{id}
 
-### Debugging in vscode
+Update a book's details by its ID. Requires an API key for authentication.
 
-Open the debugger tab, select `launch dev server` and the task, and press the "play" button.
+> DELETE /books/{id}
 
-This will launch the dev server in vscode and allow you to add breakpoints for debugging.
+Delete a book by its ID.
+ Requires an API key for authentication.
 
-## TODO
+## Testing
 
-Add the following to CI.yml when `JEST` is fixed
- -- --detectOpenHandles --forceExit
+To run the test suite, execute:
+
+   ```bash
+   npm run test
+   ```
+
+For continuous testing during development, use:
+
+   ```bash
+   npm run test:watch
+   ```
+
+## Error Handling
+
+The application uses a centralized error handling mechanism to manage exceptions and provide meaningful error responses. Key components include:
+
+- **Exception Handler**: Located in app/exceptions/handler.ts, it captures and processes exceptions, returning appropriate HTTP responses.
+- **Custom Exceptions**: Defined in app/exceptions, such as UnProcessableException, to handle specific error scenarios.
+- **`{"name":"KnexTimeoutError"}`**: If this is the response, then the error is due to application is unable to either connect to database, or else DBMS is not responding. Give it 2-5 mins on Replit and it auto-starts DB service, or else re-deploy your code to fix it immediately
+
+## Key Code Components
+
+- **Controllers:** Located in app/controllers, these handle incoming requests and return responses. For example, books_controller.ts manages book-related operations.
+- **Services:** Found in app/services, these contain business logic. book_service.ts is responsible for operations like fetching and updating books.
+- **Models:** Defined in app/models, these represent database entities. book.ts is the model for book records.
+- **Middleware:** Located in app/middleware, these are used for request processing, such as api_key_required_middleware.ts for API key validation.
+- **Validators:** Found in app/validators, these ensure request data is valid before processing. For instance, book_create_request_validator.ts validates book creation requests.
+- **Scheduled Tasks:** Managed by scheduler_service.ts in app/services, which schedules jobs like delete_entries_job.ts to clean up old data.
+
+## License
+
+This project is licensed under the ISC License. See the LICENSE.md file for more details.
