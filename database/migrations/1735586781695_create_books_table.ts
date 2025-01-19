@@ -4,10 +4,10 @@ import { BaseSchema } from '@adonisjs/lucid/schema';
 export default class extends BaseSchema {
   public override async up(): Promise<void> {
     this.schema.createTable(Book.table, (table) => {
-      table.string('id').primary();
+      table.string('id', 255).primary();
 
       table.string(Book.columnName('author'), 60).notNullable().index();
-      table.string(Book.columnName('genre'), 20).notNullable().index();
+      table.string(Book.columnName('genre'), 100).notNullable().index();
       table.text(Book.columnName('title')).notNullable().index();
       table.integer(Book.columnName('yearPublished')).notNullable().index();
 
