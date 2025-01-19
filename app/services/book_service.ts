@@ -1,11 +1,9 @@
 import Book from "#models/book";
 import { ServiceResponseType } from "#types/Core";
-import Utils from "#utils/Utils";
-import { DateTime } from "luxon";
 
 
 class BookService {
-    public async getBooks({ id, body }: { id?: number, body?: Partial<Book> }): Promise<ServiceResponseType> {
+    public async getBooks({ id, body }: { id?: number, body?: Partial<Book> }): Promise<ServiceResponseType<Book>> {
         try {
             const bookSelectQuery = Book
                 .query()
@@ -113,46 +111,26 @@ class BookService {
         }
     }
 
-    public async createNewBook(body: Partial<Book>): Promise<ServiceResponseType> {
+    public async createNewBook(body: Partial<Book>): Promise<ServiceResponseType<Book>> {
         try {
-            body = await Book.validateForCreate(body);
+            const createdBook = await Book.validateCreate(body);
 
-            body = Object.assign(body, {
-                id: Utils.generateUuid(),
-                createdAt: DateTime.now().toSQL(),
-                updatedAt: DateTime.now().toSQL()
-            });
-
-            // This step is needed to get all the fields that are not sent in the request body
-            // Ideally we would use Book.validateCreate(body)
-
-            const [createdBook] = await Book.query().knexQuery.insert(Utils.toSnakeCase(body)).returning([
-                Book.queryColumn('id'),
-                Book.queryColumn('title'),
-                Book.queryColumn('author'),
-                Book.queryColumn('genre'),
-                Book.queryColumn('yearPublished'),
-                Book.queryColumn('checkedOut'),
-                Book.queryColumn('isPermanentCollection'),
-                Book.queryColumn('createdAt')
-            ]);
-
-            createdBook.created_at = createdBook.created_at.toISOString();
+            await createdBook.refresh();
 
             return {
                 status: 201,
-                data: Utils.toCamelCase(createdBook)
+                data: createdBook
             };
         } catch (err) {
             console.log(JSON.stringify(err));
             return {
                 status: 500,
-                data: { err },
+                data: err,
             };
         }
     }
 
-    public async updateBook({ id, body }: { id: number, body: Partial<Book> }): Promise<ServiceResponseType> {
+    public async updateBook({ id, body }: { id: number, body: Partial<Book> }): Promise<ServiceResponseType<Book>> {
         try {
             const book = await Book.find(id);
 
@@ -173,27 +151,21 @@ class BookService {
                 };
             }
 
-            // This step is needed to get all the fields that are not sent in the request body
-            // Ideally we would use Book.validateUpdate(body)
-            const bookData = Object.assign(await Book.validateForUpdate(body), { updatedAt: DateTime.now() });
-
-            const [updatedBook] = await Book.query().update(bookData).returning([
-                Book.queryColumn('id'),
-                Book.queryColumn('title'),
-                Book.queryColumn('author'),
-                Book.queryColumn('genre'),
-                Book.queryColumn('yearPublished'),
-                Book.queryColumn('checkedOut'),
-                Book.queryColumn('isPermanentCollection'),
-                Book.queryColumn('createdAt')
-            ]);
-
-            updatedBook.created_at = updatedBook.created_at.toISOString();
+            const updatedBook = await Book.validateUpdate(book.id, body);
 
 
             return {
                 status: 200,
-                data: Utils.toCamelCase(updatedBook),
+                data: {
+                    id: updatedBook?.id,
+                    title: updatedBook?.title,
+                    author: updatedBook?.author,
+                    genre: updatedBook?.genre,
+                    yearPublished: updatedBook?.yearPublished,
+                    checkedOut: updatedBook?.checkedOut,
+                    isPermanentCollection: updatedBook?.isPermanentCollection,
+                    createdAt: updatedBook?.createdAt,
+                },
             };
         } catch (err) {
             console.log(JSON.stringify(err));
@@ -204,7 +176,7 @@ class BookService {
         }
     }
 
-    public async deleteBook(id: number): Promise<ServiceResponseType> {
+    public async deleteBook(id: number): Promise<ServiceResponseType<{ message: string; }>> {
         try {
             const book = await Book.find(id);
 
