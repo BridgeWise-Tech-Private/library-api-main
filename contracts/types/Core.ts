@@ -22,7 +22,7 @@ export type SuccessResponseBaseType = {
     success: boolean;
 };
 
-export type ServiceResponseType = {
+export type ServiceResponseType<OutputType> = {
     status: number;
-    data: object | object[] | string
+    data: OutputType | object | object[] | string
 };
