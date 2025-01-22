@@ -24,9 +24,8 @@ server.errorHandler(() => import('#exceptions/handler'));
  * the request URL.
  */
 server.use([
-  (): Promise<{ default: MiddlewareAsClass }> => import('#middleware/container_bindings_middleware'),
-  (): Promise<{ default: MiddlewareAsClass }> => import('#middleware/force_json_response_middleware'),
-  (): Promise<{ default: MiddlewareAsClass }> => import('@adonisjs/cors/cors_middleware'),
+    (): Promise<{ default: MiddlewareAsClass }> => import('#middleware/container_bindings_middleware'),
+    (): Promise<{ default: MiddlewareAsClass }> => import('#middleware/force_json_response_middleware'),
 ]);
 
 /**
@@ -34,7 +33,7 @@ server.use([
  * requests with a registered route.
  */
 router.use([
-  (): Promise<{ default: MiddlewareAsClass }> => import('@adonisjs/core/bodyparser_middleware'),
+    (): Promise<{ default: MiddlewareAsClass }> => import('@adonisjs/core/bodyparser_middleware'),
 ]);
 
 /**
@@ -42,5 +41,5 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  apiKeyRequired: () => import('#middleware/api_key_required_middleware'),
+    apiKeyRequired: () => import('#middleware/api_key_required_middleware'),
 });

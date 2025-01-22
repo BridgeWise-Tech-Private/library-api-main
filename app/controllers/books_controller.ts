@@ -23,7 +23,7 @@ export default class BooksController {
 
     @RequestValidator(BookCreateRequestValidator)
     public async CreateNewBook({ request, response }: HttpContext): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+         
         try {
             const { status, data } = await book_service.createNewBook(request.all());
 

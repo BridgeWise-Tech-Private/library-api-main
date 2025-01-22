@@ -5,7 +5,7 @@ const bodyParserConfig = defineConfig({
    * The bodyparser middleware will parse the request body
    * for the following HTTP methods.
    */
-  allowedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedMethods: ['POST', 'PATCH', 'DELETE'],
 
   /**
    * Config for the "application/x-www-form-urlencoded"
@@ -47,7 +47,7 @@ const bodyParserConfig = defineConfig({
      * Maximum limit of data to parse including all files
      * and fields
      */
-    limit: '20mb',
+    limit: '01kb',
     types: ['multipart/form-data'],
   },
 });
