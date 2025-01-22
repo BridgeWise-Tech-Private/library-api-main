@@ -1,10 +1,8 @@
 import Env from '#start/env';
 import { DateTime } from 'luxon';
 import _ from 'lodash';
-import { customAlphabet } from 'nanoid';
-import dictionary from 'nanoid-dictionary';
 import { Filter } from 'bad-words';
-import BaseEnhancedModel from '#models/BaseEnhancedModel';
+import BaseStringIdModel from '#models/BaseStringIdModel';
 import { v4 as uuidV4 } from 'uuid';
 
 /** bad-words filters for these words automatically:
@@ -31,20 +29,6 @@ export default class Utils {
 
     public static SPECIAL_CHARACTERS = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\s]/;
 
-    public static numberNanoId(size = 15): string {
-        const nanoId = customAlphabet(dictionary.numbers, size);
-        return nanoId();
-    }
-
-    public static uniqueString(length = 16): string {
-        const stringNanoid = customAlphabet(
-            dictionary.alphanumeric,
-            length
-        );
-
-        return stringNanoid();
-    }
-
     public static generateUuid(): string {
         return uuidV4();
     }
@@ -57,10 +41,6 @@ export default class Utils {
 
     public static uniqueId(): number {
         return Number.parseInt(`${Date.now()}${Utils.random(111, 999)}`);
-    }
-
-    public static uniqueNanoId(): number {
-        return Number.parseInt(Utils.numberNanoId());
     }
 
     public static async delay(ms: number): Promise<void> {
@@ -119,7 +99,7 @@ export default class Utils {
         try {
             const parsed = JSON.parse(value);
             return parsed && typeof parsed === 'object';
-        } catch (error) {
+        } catch {
             return false;
         }
     }
@@ -153,7 +133,7 @@ export default class Utils {
         return profanityFilter.clean(str);
     };
 
-    public static filterObjStringsForProfanity<T extends { [key: string]: unknown } | BaseEnhancedModel>(
+    public static filterObjStringsForProfanity<T extends { [key: string]: unknown } | BaseStringIdModel>(
         obj: T
     ): T {
         const filtered: { [key: string]: unknown } = {};

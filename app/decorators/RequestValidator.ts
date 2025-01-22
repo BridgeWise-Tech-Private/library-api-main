@@ -9,7 +9,7 @@ export default function (
     Record<string, unknown> | undefined
   >
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor): any {
     const originalMethod = descriptor.value;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

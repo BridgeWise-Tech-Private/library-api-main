@@ -30,13 +30,7 @@
     "noImplicitOverride": true,
     "types": [
       "@adonisjs/core",
-      "@adonisjs/repl",
       "@adonisjs/lucid",
-      // "@adonisjs/redis",
-      "@adonisjs/auth",
-      // "@adonisjs/limiter",
-      // "@adonisjs/mail",
-      // "@adonisjs/bouncer"
     ],
     "paths": {
       "#controllers/*": ["./app/controllers/*"],
